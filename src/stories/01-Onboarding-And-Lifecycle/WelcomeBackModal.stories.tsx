@@ -12,24 +12,17 @@ function formatDHMS(seconds: number): string {
   return `${d}d ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-function formatHMS(seconds: number): string {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  return `${h}h ${m}m ${s}s`;
-}
-
 interface WelcomeBackModalProps {
   onClose?: () => void;
   offlineDurationSeconds?: number;
-  energyRegenerated?: number;
+  energyRegenerated?: number; // EN units regenerated (1.0 EN/min uncapped offline)
   logEntries?: string[];
 }
 
 const WelcomeBackModal = ({
   onClose,
   offlineDurationSeconds = 42 * 60,
-  energyRegenerated = 1200,
+  energyRegenerated = 42, // 42 min * 1.0 EN/min
   logEntries = [],
 }: WelcomeBackModalProps) => {
   const [open, setOpen] = useState(true);
@@ -62,14 +55,12 @@ const WelcomeBackModal = ({
           </button>
         </div>
 
-        {/* Energy regenerated (uncapped) */}
+        {/* Energy regenerated (uncapped, 1.0 EN/min) */}
         <div className="mb-4 border-t border-[hsl(var(--border))] pt-4">
           <p className="mb-1 text-xs text-cyan-300">Solar Energy Regenerated</p>
-          <p className="font-mono text-xl font-bold text-cyan-300">
-            {formatHMS(energyRegenerated)}
-          </p>
+          <p className="font-mono text-xl font-bold text-cyan-300">{energyRegenerated} EN</p>
           <p className="text-[10px] text-cyan-200/60">
-            Passive regen via onboard solar panels (no offline time cap)
+            1.0 EN/min passive solar panels (no offline time cap)
           </p>
         </div>
 
@@ -147,7 +138,7 @@ type Story = StoryObj<typeof WelcomeBackModal>;
 export const OfflineResumption: Story = {
   args: {
     offlineDurationSeconds: 42 * 60,
-    energyRegenerated: 1200,
+    energyRegenerated: 42, // 42m @ 1.0 EN/min
     logEntries: ['Departed Sol system', 'Collected solar data', 'Mined ice crystals'],
     onClose: () => console.log('Closed'),
   },
@@ -155,7 +146,7 @@ export const OfflineResumption: Story = {
     docs: {
       description: {
         story:
-          "**WelcomeBackModal**: Displays DD:HH:MM:SS offline elapsed time (42m 00s), passive Solar Energy regenerated (uncapped, 1200s passive regen via onboard solar panels), and completed timer resolutions. Captain's Log with event entries.",
+          "**WelcomeBackModal**: Displays DD:HH:MM:SS offline elapsed time (42m 00s), passive Solar Energy regenerated (uncapped, 42 EN at the 1.0 EN/min onboard solar rate), and completed timer resolutions. Captain's Log with event entries.",
       },
     },
   },
@@ -164,7 +155,7 @@ export const OfflineResumption: Story = {
 export const WelcomeBack24Hours: Story = {
   args: {
     offlineDurationSeconds: 24 * 60 * 60,
-    energyRegenerated: 86400,
+    energyRegenerated: 1440, // 24h * 1.0 EN/min
     logEntries: [
       'Long exploration mission completed',
       'Multiple system discoveries',
@@ -176,7 +167,7 @@ export const WelcomeBack24Hours: Story = {
     docs: {
       description: {
         story:
-          "**WelcomeBackModal** with 24h offline duration: shows extended DD:HH:MM:SS format, 86400s uncapped solar energy regen, and comprehensive Captain's Log.",
+          "**WelcomeBackModal** with 24h offline duration: shows extended DD:HH:MM:SS format, 1440 EN uncapped solar energy regen, and comprehensive Captain's Log.",
       },
     },
   },

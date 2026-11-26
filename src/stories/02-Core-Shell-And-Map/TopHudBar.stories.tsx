@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { cn } from '@/lib/utils';
 import { Rocket, Settings, Zap } from 'lucide-react';
-import { formatCredits } from '@/lib/game';
+import { formatCredits, MAX_ENERGY, ENERGY_REGEN_PER_MINUTE } from '@/lib/game';
 
 interface TopHudBarProps {
   systemName: string;
@@ -29,7 +28,9 @@ const TopHudBar = ({ systemName, credits, energy, onSettingsClick }: TopHudBarPr
           </div>
           <div className="flex items-center gap-1">
             <Zap className="h-4 w-4 text-cyan-400" />
-            <span className="font-mono font-bold text-cyan-300">{energy}</span>
+            <span className="font-mono font-bold text-cyan-300">
+              {energy} / {MAX_ENERGY} EN
+            </span>
           </div>
           <button
             onClick={onSettingsClick}
@@ -39,6 +40,11 @@ const TopHudBar = ({ systemName, credits, energy, onSettingsClick }: TopHudBarPr
             <Settings className="h-5 w-5" />
           </button>
         </div>
+      </div>
+      <div className="mt-1 flex items-center justify-end">
+        <span className="font-mono text-[10px] text-cyan-200/60">
+          +{ENERGY_REGEN_PER_MINUTE.toFixed(1)} EN/min passive solar
+        </span>
       </div>
     </div>
   );

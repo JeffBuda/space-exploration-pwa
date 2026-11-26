@@ -30,7 +30,10 @@ export const RARITY_RING: Record<ElementRarity, string> = {
 };
 
 export function formatCredits(credits: number): string {
-  return credits.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  return Math.floor(credits).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 }
 
 export function formatDuration(seconds: number): string {
@@ -59,10 +62,13 @@ export function formatTimeDHMS(seconds: number): string {
 }
 
 // ── Game constants ──────────────────────────────────────────────────────
-export const INITIAL_CREDITS = 0;
-export const INITIAL_ENERGY = 1000;
-export const MAX_ENERGY = 1000;
-export const ENERGY_REGEN_PER_SECOND = 1; // passive solar panel regen (no offline cap)
+// Sol starter state ("New Run"): Sol pre-scanned, guaranteed safe starter
+// planets/moons, guaranteed Spaceport, 100 CR (integer), 100/100 EN,
+// 1.0 EN/min passive solar regeneration (uncapped offline).
+export const INITIAL_CREDITS = 100;
+export const INITIAL_ENERGY = 100;
+export const MAX_ENERGY = 100;
+export const ENERGY_REGEN_PER_MINUTE = 1; // 1.0 EN/min passive solar regen (no offline cap)
 export const SPACEPORT_CHANCE = 0.1; // ~10% of safe systems have a Spaceport
 
 // Energy cost per light-year (simple linear scaling)
