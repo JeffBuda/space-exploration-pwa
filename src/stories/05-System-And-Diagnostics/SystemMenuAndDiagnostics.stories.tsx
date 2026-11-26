@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Terminal, Wrench, Download, Upload, Trash2, Filter, Copy } from "lucide-react";
-import { useRef, useEffect } from "react";
+} from '@/components/ui/drawer';
+import { Terminal, Wrench, Download, Upload, Trash2, Filter, Copy } from 'lucide-react';
+import { useRef, useEffect } from 'react';
 import {
   formatCredits,
   formatDuration,
@@ -20,8 +20,8 @@ import {
   markElementDiscovered,
   calculateTimeSkipAmount,
   processTimeSkipTap,
-} from "@/lib/game";
-import { ELEMENTS } from "@/lib/elements";
+} from '@/lib/game';
+import { ELEMENTS } from '@/lib/elements';
 
 interface DiagnosticState {
   versionTaps: number;
@@ -36,22 +36,22 @@ const INITIAL_STATE_DIAG: DiagnosticState = {
 // ── Mock log entries ────────────────────────────────────────────────────
 const MOCK_LOGS = [
   {
-    id: "1",
-    timestamp: "2024-01-15T10:30:00.123Z",
-    level: "ENGINE",
-    action: "WARP_INITIATE",
+    id: '1',
+    timestamp: '2024-01-15T10:30:00.123Z',
+    level: 'ENGINE',
+    action: 'WARP_INITIATE',
     executionTimeMs: 45,
     stateDiff: {
-      location: "Sol → Proxima",
+      location: 'Sol → Proxima',
       credits: -450,
-      route: ["proxima"],
+      route: ['proxima'],
     },
   },
   {
-    id: "2",
-    timestamp: "2024-01-15T10:31:15.456Z",
-    level: "ECONOMY",
-    action: "CARGO_BUY",
+    id: '2',
+    timestamp: '2024-01-15T10:31:15.456Z',
+    level: 'ECONOMY',
+    action: 'CARGO_BUY',
     executionTimeMs: 12,
     stateDiff: {
       cargo: { iron: 5 },
@@ -59,21 +59,21 @@ const MOCK_LOGS = [
     },
   },
   {
-    id: "3",
-    timestamp: "2024-01-15T10:32:00.789Z",
-    level: "NAVIGATION",
-    action: "ROUTE_PLOT",
+    id: '3',
+    timestamp: '2024-01-15T10:32:00.789Z',
+    level: 'NAVIGATION',
+    action: 'ROUTE_PLOT',
     executionTimeMs: 8,
     stateDiff: {
-      route: ["sol", "proxima", "kepler"],
+      route: ['sol', 'proxima', 'kepler'],
       distance: 124.2,
     },
   },
   {
-    id: "4",
-    timestamp: "2024-01-15T10:33:22.001Z",
-    level: "ENGINE",
-    action: "TIME_SKIP",
+    id: '4',
+    timestamp: '2024-01-15T10:33:22.001Z',
+    level: 'ENGINE',
+    action: 'TIME_SKIP',
     executionTimeMs: 23,
     stateDiff: {
       timeAccelerated: 1,
@@ -83,14 +83,12 @@ const MOCK_LOGS = [
 ];
 
 interface SystemMenuAndDiagnosticsProps {
-  mode?: "settings-menu" | "debug-console";
+  mode?: 'settings-menu' | 'debug-console';
 }
 
-const SystemMenuAndDiagnostics = ({
-  mode,
-}: SystemMenuAndDiagnosticsProps) => {
+const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
   const [versionTaps, setVersionTaps] = useState(0);
-  const [filter, setFilter] = useState<"ALL" | "ENGINE" | "ECONOMY" | "NAVIGATION">("ALL");
+  const [filter, setFilter] = useState<'ALL' | 'ENGINE' | 'ECONOMY' | 'NAVIGATION'>('ALL');
   const [debugActive, setDebugActive] = useState(false);
 
   // ── 5-tap trigger on version footer ──
@@ -106,9 +104,7 @@ const SystemMenuAndDiagnostics = ({
     }
   };
 
-  const filteredLogs = MOCK_LOGS.filter((log) =>
-    filter === "ALL" ? true : log.level === filter
-  );
+  const filteredLogs = MOCK_LOGS.filter((log) => (filter === 'ALL' ? true : log.level === filter));
 
   useEffect(() => {
     const timer = setTimeout(() => setVersionTaps(0), 10000);
@@ -116,32 +112,27 @@ const SystemMenuAndDiagnostics = ({
   }, [versionTaps]);
 
   // ── Settings Menu view ──
-  if (mode === "settings-menu") {
+  if (mode === 'settings-menu') {
     return (
       <div className="relative">
         {/* Settings Menu */}
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[hsl(var(--card))] rounded-2xl p-6 shadow-2xl shadow-black/30 space-y-6 max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold text-cyan-100 text-center">Settings</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="max-h-[80vh] w-full max-w-md space-y-6 overflow-y-auto rounded-2xl bg-[hsl(var(--card))] p-6 shadow-2xl shadow-black/30">
+            <h2 className="text-center text-xl font-bold text-cyan-100">Settings</h2>
 
             {/* iOS Install Guide */}
             <div className="space-y-3 border-t pt-4">
               <h3 className="text-sm font-medium text-cyan-300">iOS Install Guide</h3>
-              <p className="text-xs text-cyan-200/60 mb-2">
-                Safari's 7-day ITP storage wipe prevention. If running in mobile Safari and not standalone:
+              <p className="mb-2 text-xs text-cyan-200/60">
+                Safari's 7-day ITP storage wipe prevention. If running in mobile Safari and not
+                standalone:
               </p>
-              <ol className="list-disc list-inside text-xs text-cyan-200/60 space-y-1">
-                <li>
-                  Tap Share → scroll down → "Add to Home Screen"
-                </li>
-                <li>
-                  Confirm adding the app to your home screen
-                </li>
-                <li>
-                  Launch from Home Screen for standalone mode
-                </li>
+              <ol className="list-inside list-disc space-y-1 text-xs text-cyan-200/60">
+                <li>Tap Share → scroll down → "Add to Home Screen"</li>
+                <li>Confirm adding the app to your home screen</li>
+                <li>Launch from Home Screen for standalone mode</li>
               </ol>
-              <p className="text-[10px] text-cyan-200/60 mt-2">
+              <p className="mt-2 text-[10px] text-cyan-200/60">
                 This prevents Safari's 7-day storage wipe and preserves your progress.
               </p>
             </div>
@@ -149,19 +140,19 @@ const SystemMenuAndDiagnostics = ({
             {/* Save Backup */}
             <div className="space-y-2 border-t pt-4">
               <h3 className="text-sm font-medium text-cyan-300">Save Backup</h3>
-              <button className="w-full py-2 rounded-lg text-sm font-medium bg-cyan-900/30 border border-cyan-700/50 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900 flex items-center justify-center gap-2">
-                <Download className="w-4 h-4" /> Export Save (JSON)
+              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900">
+                <Download className="h-4 w-4" /> Export Save (JSON)
               </button>
-              <button className="w-full py-2 rounded-lg text-sm font-medium bg-cyan-900/30 border border-cyan-700/50 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900 flex items-center justify-center gap-2">
-                <Upload className="w-4 h-4" /> Import Save
+              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900">
+                <Upload className="h-4 w-4" /> Import Save
               </button>
             </div>
 
             {/* Force UI Update */}
             <div className="space-y-2 border-t pt-4">
               <h3 className="text-sm font-medium text-cyan-300">Diagnostics</h3>
-              <button className="w-full py-2 rounded-lg text-sm font-medium bg-cyan-600 text-white flex items-center justify-center gap-2">
-                <Wrench className="w-4 h-4" /> Force UI Update (Clear Cache & Preserve Save)
+              <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 py-2 text-sm font-medium text-white">
+                <Wrench className="h-4 w-4" /> Force UI Update (Clear Cache & Preserve Save)
               </button>
             </div>
 
@@ -169,14 +160,12 @@ const SystemMenuAndDiagnostics = ({
             <div className="border-t pt-4 text-center">
               <button
                 type="button"
-                className="m-0 p-0 border-none bg-none text-xs text-cyan-300/60 font-normal text-left align-baseline"
+                className="m-0 border-none bg-none p-0 text-left align-baseline text-xs font-normal text-cyan-300/60"
                 onClick={handleVersionTap}
               >
                 v0.1.0-alpha <span className="text-cyan-400/50">(tap 5× for Debug)</span>
               </button>
-              <p className="text-[10px] text-cyan-300/40 mt-1">
-                Version taps: {versionTaps} / 5
-              </p>
+              <p className="mt-1 text-[10px] text-cyan-300/40">Version taps: {versionTaps} / 5</p>
             </div>
           </div>
         </div>
@@ -185,40 +174,40 @@ const SystemMenuAndDiagnostics = ({
   }
 
   // ── Debug Console Overlay ──
-  if (mode === "debug-console") {
+  if (mode === 'debug-console') {
     return (
       <div className="relative">
         {/* Debug Console Overlay */}
-        <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col">
+        <div className="fixed inset-0 z-[100] flex flex-col bg-black/90">
           {/* Header */}
-          <div className="fixed top-0 left-0 right-0 mx-auto max-w-[430px] px-4 py-3 border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] flex items-center justify-between z-[101]">
-            <h2 className="text-lg font-bold text-cyan-100 flex items-center gap-2">
-              <Terminal className="w-5 h-5" /> Debug Console
+          <div className="fixed left-0 right-0 top-0 z-[101] mx-auto flex max-w-[430px] items-center justify-between border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3">
+            <h2 className="flex items-center gap-2 text-lg font-bold text-cyan-100">
+              <Terminal className="h-5 w-5" /> Debug Console
             </h2>
             <div className="flex items-center gap-2">
-              <button className="p-1 rounded hover:bg-cyan-900/30 text-cyan-300/60">
-                <Filter className="w-4 h-4" />
+              <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+                <Filter className="h-4 w-4" />
               </button>
-              <button className="p-1 rounded hover:bg-cyan-900/30 text-cyan-300/60">
-                <Copy className="w-4 h-4" />
+              <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+                <Copy className="h-4 w-4" />
               </button>
-              <button className="p-1 rounded hover:bg-cyan-900/30 text-cyan-300/60">
-                <Trash2 className="w-4 h-4" />
+              <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
           </div>
 
           {/* Filter tabs */}
-          <div className="fixed top-[50px] left-0 right-0 mx-auto max-w-[430px] px-4 flex gap-1 border-b border-[hsl(var(--border))] pb-2 bg-[hsl(var(--card))] z-[100]">
-            {(["ALL", "ENGINE", "ECONOMY", "NAVIGATION"] as const).map((f) => (
+          <div className="fixed left-0 right-0 top-[50px] z-[100] mx-auto flex max-w-[430px] gap-1 border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 pb-2">
+            {(['ALL', 'ENGINE', 'ECONOMY', 'NAVIGATION'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={cn(
-                  "px-3 py-1 rounded-md text-xs font-medium",
+                  'rounded-md px-3 py-1 text-xs font-medium',
                   filter === f
-                    ? "bg-cyan-600 text-white"
-                    : "bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30",
+                    ? 'bg-cyan-600 text-white'
+                    : 'bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30'
                 )}
               >
                 {f}
@@ -227,24 +216,26 @@ const SystemMenuAndDiagnostics = ({
           </div>
 
           {/* Log viewer */}
-          <div className="fixed top-[90px] left-0 right-0 mx-auto max-w-[430px] px-4 pb-20 overflow-y-auto">
+          <div className="fixed left-0 right-0 top-[90px] mx-auto max-w-[430px] overflow-y-auto px-4 pb-20">
             <div className="space-y-1 pt-2 font-mono text-[11px]">
               {filteredLogs.map((log) => (
                 <div
                   key={log.id}
                   className={cn(
-                    "p-3 rounded-lg bg-cyan-900/20 border border-cyan-700/30 space-y-1",
-                    "hover:border-cyan-500/30 transition-colors"
+                    'space-y-1 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3',
+                    'transition-colors hover:border-cyan-500/30'
                   )}
                 >
                   <div className="flex items-center justify-between text-[10px] text-cyan-300/50">
                     <span>{log.timestamp}</span>
-                    <span className={cn(
-                      "px-1.5 py-0.5 rounded text-[9px] font-medium",
-                      log.level === "ENGINE" && "bg-cyan-600/30 text-cyan-300",
-                      log.level === "ECONOMY" && "bg-amber-600/30 text-amber-300",
-                      log.level === "NAVIGATION" && "bg-purple-600/30 text-purple-300",
-                    )}>
+                    <span
+                      className={cn(
+                        'rounded px-1.5 py-0.5 text-[9px] font-medium',
+                        log.level === 'ENGINE' && 'bg-cyan-600/30 text-cyan-300',
+                        log.level === 'ECONOMY' && 'bg-amber-600/30 text-amber-300',
+                        log.level === 'NAVIGATION' && 'bg-purple-600/30 text-purple-300'
+                      )}
+                    >
                       {log.level}
                     </span>
                   </div>
@@ -252,7 +243,7 @@ const SystemMenuAndDiagnostics = ({
                     <span className="font-medium text-cyan-100">{log.action}</span>
                     <span className="text-cyan-300/60">{log.executionTimeMs}ms</span>
                   </div>
-                  <pre className="text-cyan-200/60 whitespace-pre-wrap overflow-x-auto text-[10px] bg-black/30 p-2 rounded">
+                  <pre className="overflow-x-auto whitespace-pre-wrap rounded bg-black/30 p-2 text-[10px] text-cyan-200/60">
                     {JSON.stringify(log.stateDiff, null, 2)}
                   </pre>
                 </div>
@@ -261,12 +252,12 @@ const SystemMenuAndDiagnostics = ({
           </div>
 
           {/* Footer actions */}
-          <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-[430px] px-4 py-3 border-t border-[hsl(var(--border))] bg-[hsl(var(--card))] flex gap-2 z-[101]">
-            <button className="flex-1 py-2 rounded-lg text-sm font-medium bg-cyan-900/30 border border-cyan-700/50 text-cyan-300 hover:bg-cyan-800/30 flex items-center justify-center gap-2">
-              <Download className="w-4 h-4" /> Export Trace
+          <div className="fixed bottom-0 left-0 right-0 z-[101] mx-auto flex max-w-[430px] gap-2 border-t border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3">
+            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30">
+              <Download className="h-4 w-4" /> Export Trace
             </button>
-            <button className="flex-1 py-2 rounded-lg text-sm font-medium bg-red-900/30 border border-red-700/50 text-red-400 hover:bg-red-800/30 flex items-center justify-center gap-2">
-              <Trash2 className="w-4 h-4" /> Clear Logs
+            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-700/50 bg-red-900/30 py-2 text-sm font-medium text-red-400 hover:bg-red-800/30">
+              <Trash2 className="h-4 w-4" /> Clear Logs
             </button>
           </div>
         </div>
@@ -279,12 +270,12 @@ const SystemMenuAndDiagnostics = ({
 };
 
 const meta: Meta<typeof SystemMenuAndDiagnostics> = {
-  title: "05-System-And-Diagnostics/SystemMenuAndDiagnostics",
+  title: '05-System-And-Diagnostics/SystemMenuAndDiagnostics',
   component: SystemMenuAndDiagnostics,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "fullscreen",
-    viewport: { defaultViewport: "iphone14" },
+    layout: 'fullscreen',
+    viewport: { defaultViewport: 'iphone14' },
   },
 };
 
@@ -293,13 +284,13 @@ type Story = StoryObj<typeof SystemMenuAndDiagnostics>;
 
 export const SettingsMenu: Story = {
   args: {
-    mode: "settings-menu",
+    mode: 'settings-menu',
   },
   parameters: {
     docs: {
       description: {
         story:
-          "**SettingsMenu**: Audio/haptics toggles, iOS Install Guide, Save Backup (JSON export/import UI), Force UI Update (Clear Cache & Preserve Save) button, and version footer (v0.1.0-alpha — tapping 5× opens the Debug Console).",
+          '**SettingsMenu**: Audio/haptics toggles, iOS Install Guide, Save Backup (JSON export/import UI), Force UI Update (Clear Cache & Preserve Save) button, and version footer (v0.1.0-alpha — tapping 5× opens the Debug Console).',
       },
     },
   },
@@ -307,13 +298,13 @@ export const SettingsMenu: Story = {
 
 export const DebugConsoleOverlay: Story = {
   args: {
-    mode: "debug-console",
+    mode: 'debug-console',
   },
   parameters: {
     docs: {
       description: {
         story:
-          "**DebugConsoleOverlay**: Filterable log viewer (ALL, ENGINE, ECONOMY, NAVIGATION) displaying mock state-diff entries (action, executionTimeMs, stateDiff JSON tree) and [EXPORT TRACE] / [CLEAR LOGS] actions. Accessible via 5-tap hidden trigger on version footer (v0.1.0-alpha).",
+          '**DebugConsoleOverlay**: Filterable log viewer (ALL, ENGINE, ECONOMY, NAVIGATION) displaying mock state-diff entries (action, executionTimeMs, stateDiff JSON tree) and [EXPORT TRACE] / [CLEAR LOGS] actions. Accessible via 5-tap hidden trigger on version footer (v0.1.0-alpha).',
       },
     },
   },
