@@ -2,11 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Cross, Command, Zap } from 'lucide-react';
-import {
-  calculateWarpEnergyCost,
-  calculateTravelTimeSeconds,
-  formatDuration,
-} from '@/lib/game';
+import { calculateWarpEnergyCost, calculateTravelTimeSeconds, formatDuration } from '@/lib/game';
 import { ELEMENTS } from '@/lib/elements';
 
 // ── Mock systems for StarMap demo ─────────────────────────────────────────
@@ -56,13 +52,19 @@ const StarMapCanvas = ({
   energy = 100,
 }: StarMapCanvasProps) => {
   // Local mutable state for interactivity
-  const [selectedStar, setSelectedStar] = useState<string | undefined>(
-    initialSelectedStar
-  );
+  const [selectedStar, setSelectedStar] = useState<string | undefined>(initialSelectedStar);
   const [route, setRoute] = useState<string[]>(initialRoute);
   const [transit, setTransit] = useState(initialTransit);
   const [expandedRoute, setExpandedRoute] = useState(false);
-  const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(() => {
+    if (!initialTransit) return 0;
+    const edge = EDGES.find(
+      (e) =>
+        (e.from === initialRoute[0] && e.to === initialRoute[1]) ||
+        (e.from === initialRoute[1] && e.to === initialRoute[0])
+    );
+    return edge ? Math.max(1, Math.floor(calculateTravelTimeSeconds(edge.distance) * 0.4)) : 0;
+  });
   const [timerId, setTimerId] = useState<number | null>(null);
   const [timeSkipCombo, setTimeSkipCombo] = useState(0);
   const [lastTimeSkipTap, setLastTimeSkipTap] = useState(0);
@@ -101,14 +103,8 @@ const StarMapCanvas = ({
     return hopList;
   }, [route]);
 
-  const totalEnergy = hops.reduce(
-    (acc, h) => acc + h.energy,
-    0
-  );
-  const totalTime = hops.reduce(
-    (acc, h) => acc + h.time,
-    0
-  );
+  const totalEnergy = hops.reduce((acc, h) => acc + h.energy, 0);
+  const totalTime = hops.reduce((acc, h) => acc + h.time, 0);
 
   const insufficientEnergy = totalEnergy > energyState;
 
@@ -252,11 +248,7 @@ const StarMapCanvas = ({
     if (!transit) return;
 
     const hop = hops[currentHopIndex];
-    if (!hop) {
-      setTransit(false);
-      setArrivedAt(selectedStar ?? 'unknown');
-      return;
-    }
+    if (!hop) return;
 
     const intervalId = window.setInterval(() => {
       setRemainingSeconds((prev) => {
@@ -277,14 +269,6 @@ const StarMapCanvas = ({
 
     return () => window.clearInterval(intervalId);
   }, [transit, currentHopIndex, hops, route]);
-
-  // Initialize remainingSeconds on mount when in-transit
-  useEffect(() => {
-    if (!initialTransit) return;
-    if (hops.length > 0) {
-      setRemainingSeconds(Math.max(1, Math.floor(hops[0].time * 0.4)));
-    }
-  }, [initialTransit, hops]);
 
   const isRouteValid = route.length > 0 && route[0] === 'sol';
 
@@ -442,9 +426,9 @@ const StarMapCanvas = ({
                       <Zap className="mr-1 h-4 w-4" />
                       Time-Skip
                       <span className="ml-2 font-mono text-xs text-green-300">
-                        {timeSkipCombo <= 0 ? '1x / -1s' : `${timeSkipCombo}x / -${Math.abs(
-                          Math.pow(1.35, timeSkipCombo)
-                        )}s`}
+                        {timeSkipCombo <= 0
+                          ? '1x / -1s'
+                          : `${timeSkipCombo}x / -${Math.abs(Math.pow(1.35, timeSkipCombo))}s`}
                       </span>
                     </button>
                   </div>
@@ -484,7 +468,9 @@ const StarMapCanvas = ({
               {/* Default empty state */}
               {!transit && route.length === 0 && (
                 <div className="pt-4 text-center">
-                  <p className="text-[10px] text-slate-500">No route plotted. Tap a star to begin.</p>
+                  <p className="text-[10px] text-slate-500">
+                    No route plotted. Tap a star to begin.
+                  </p>
                 </div>
               )}
 
@@ -493,8 +479,8 @@ const StarMapCanvas = ({
                 <div className="mt-3 rounded-lg border border-cyan-700/30 bg-cyan-900/10 p-3">
                   <p className="mb-1 text-[10px] text-cyan-300/60">Tail Severing</p>
                   <p className="text-[10px] text-slate-400">
-                    Tap any star in the route to sever the tail — downstream hops are removed, keeping
-                    the route contiguous from Sol.
+                    Tap any star in the route to sever the tail — downstream hops are removed,
+                    keeping the route contiguous from Sol.
                   </p>
                 </div>
               )}
@@ -503,9 +489,7 @@ const StarMapCanvas = ({
               {route.length > 1 && !transit && timeSkipCombo > 0 && (
                 <div className="mt-2 rounded-lg border border-cyan-500/30 bg-cyan-900/30 p-2">
                   <p className="text-[10px] text-cyan-300/60">Time-Skip Combo</p>
-                  <p className="font-mono text-cyan-100">
-                    {timeSkipCombo}x
-                  </p>
+                  <p className="font-mono text-cyan-100">{timeSkipCombo}x</p>
                 </div>
               )}
             </div>

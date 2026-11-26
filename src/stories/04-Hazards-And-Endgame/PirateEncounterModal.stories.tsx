@@ -36,9 +36,12 @@ const PirateEncounterModal = ({
   const [stolen, setStolen] = useState<StolenCargo | null>(null);
   const decayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => () => {
-    if (decayTimer.current !== null) clearTimeout(decayTimer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (decayTimer.current !== null) clearTimeout(decayTimer.current);
+    },
+    []
+  );
 
   const handleTap = (now: number) => {
     if (decayTimer.current !== null) clearTimeout(decayTimer.current);
@@ -137,8 +140,7 @@ const PirateEncounterModal = ({
               <span className="text-[10px] text-amber-300/60">{stolen.symbol}</span>
             </div>
             <p className="text-[10px] text-amber-300">
-              Quantity stolen:{' '}
-              <span className="font-mono text-amber-400">{stolen.quantity}</span>
+              Quantity stolen: <span className="font-mono text-amber-400">{stolen.quantity}</span>
             </p>
           </div>
         )}
@@ -154,15 +156,17 @@ const PirateEncounterModal = ({
           <div className="mb-4 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
             <p className="mb-2 text-[10px] font-medium text-cyan-300">Cadence-Scaling Evasion</p>
             <p className="mb-2 text-[10px] text-cyan-200/60">
-              Tapping faster increases evasion probability. Failing to evade loses a random amount of
-              Periodic Table cargo.
+              Tapping faster increases evasion probability. Failing to evade loses a random amount
+              of Periodic Table cargo.
             </p>
 
             {/* Live evasion probability gauge */}
             <div className="mb-2">
-              <div className="flex items-center justify-between mb-1">
+              <div className="mb-1 flex items-center justify-between">
                 <span className="text-[10px] text-cyan-200/60">Evasion Probability</span>
-                <span className="font-mono text-xs text-cyan-300">{evasionGainedThisTap.toFixed(0)}%</span>
+                <span className="font-mono text-xs text-cyan-300">
+                  {evasionGainedThisTap.toFixed(0)}%
+                </span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-slate-700">
                 <div

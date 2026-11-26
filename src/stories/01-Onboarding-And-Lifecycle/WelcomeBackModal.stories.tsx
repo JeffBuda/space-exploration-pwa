@@ -58,9 +58,7 @@ const WelcomeBackModal = ({
         {/* Energy regenerated (uncapped, 1.0 EN/min) */}
         <div className="mb-4 border-t border-[hsl(var(--border))] pt-4">
           <p className="mb-1 text-xs text-cyan-300">Solar Energy Regenerated</p>
-          <p className="font-mono text-xl font-bold text-cyan-300">
-            {energyRegenerated} EN
-          </p>
+          <p className="font-mono text-xl font-bold text-cyan-300">{energyRegenerated} EN</p>
           <p className="text-[10px] text-cyan-200/60">
             1.0 EN/min passive solar panels (no offline time cap)
           </p>

@@ -381,13 +381,15 @@ function RouteView({
       <h2 className="text-sm font-semibold text-cyan-300">Route & Transit</h2>
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[10px] font-medium text-slate-400">Active Route</span>
-        <span className={cn('font-mono text-[10px]', isRouteValid ? 'text-cyan-400' : 'text-slate-500')}>
+        <span
+          className={cn('font-mono text-[10px]', isRouteValid ? 'text-cyan-400' : 'text-slate-500')}
+        >
           {route.length > 0 ? route.join(' → ') : '—'}
         </span>
       </div>
 
       {inTransit ? (
-        <div className="rounded-lg border border-cyan-500/30 bg-cyan-900/20 p-3 space-y-2">
+        <div className="space-y-2 rounded-lg border border-cyan-500/30 bg-cyan-900/20 p-3">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-cyan-300">Hop Remaining</span>
             <span className="font-mono text-cyan-100">{formatDuration(remainingSeconds)}</span>
@@ -396,10 +398,7 @@ function RouteView({
             <div
               className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-1000"
               style={{
-                width: `${Math.max(
-                  0,
-                  ((totalTime - remainingSeconds) / totalTime) * 100
-                )}%`,
+                width: `${Math.max(0, ((totalTime - remainingSeconds) / totalTime) * 100)}%`,
               }}
             />
           </div>
@@ -431,7 +430,12 @@ function RouteView({
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-lg border border-slate-700/50 bg-slate-900/30 p-2">
                 <p className="mb-1 text-[10px] text-slate-400">Energy Cost</p>
-                <span className={cn('font-mono text-xs', insufficientEnergy ? 'text-red-400' : 'text-cyan-300')}>
+                <span
+                  className={cn(
+                    'font-mono text-xs',
+                    insufficientEnergy ? 'text-red-400' : 'text-cyan-300'
+                  )}
+                >
                   {totalEnergy}
                 </span>
               </div>
@@ -450,16 +454,17 @@ function RouteView({
               <div>
                 <p className="text-[10px] text-slate-400">Needed</p>
                 <span
-                  className={cn('font-mono text-xs', totalEnergy > energy ? 'text-red-400' : 'text-cyan-300')}
+                  className={cn(
+                    'font-mono text-xs',
+                    totalEnergy > energy ? 'text-red-400' : 'text-cyan-300'
+                  )}
                 >
                   {totalEnergy}
                 </span>
               </div>
             </div>
             {totalEnergy > energy && (
-              <p className="text-[10px] text-red-400">
-                Insufficient Energy — Engage Warp disabled
-              </p>
+              <p className="text-[10px] text-red-400">Insufficient Energy — Engage Warp disabled</p>
             )}
             <button
               className={cn(
@@ -498,19 +503,18 @@ function RouteView({
 }
 
 // ── System & Bodies View ─────────────────────────────────────────────────
-function SystemsView({
-  bodiesScanned = false,
-}: {
-  bodiesScanned?: boolean;
-}) {
+function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
   const system = SYSTEMS[0];
   const [scanningId, setScanningId] = useState<string | null>(null);
   const [scanRemaining, setScanRemaining] = useState(0);
   const [scannedIds, setScannedIds] = useState<Set<string>>(
     new Set(bodiesScanned ? system.bodies.map((b) => b.id) : [])
   );
-  const { tap: scanTap, secondsPerTap: scanSecondsPerTap, comboTier: scanCombo } =
-    useCadenceClicker();
+  const {
+    tap: scanTap,
+    secondsPerTap: scanSecondsPerTap,
+    comboTier: scanCombo,
+  } = useCadenceClicker();
 
   // Scan timer
   useEffect(() => {
@@ -555,7 +559,12 @@ function SystemsView({
         </div>
         <div>
           <p className="text-[10px] text-slate-400">Spaceport</p>
-          <p className={cn('font-mono text-xs', system.hasSpaceport ? 'text-green-400' : 'text-red-400/50')}>
+          <p
+            className={cn(
+              'font-mono text-xs',
+              system.hasSpaceport ? 'text-green-400' : 'text-red-400/50'
+            )}
+          >
             {system.hasSpaceport ? 'Yes' : 'No'}
           </p>
         </div>
@@ -571,18 +580,26 @@ function SystemsView({
           return (
             <div
               key={body.id}
-              className={cn('space-y-1 rounded-lg border p-3', isUnsafe ? 'border-red-700/30' : 'border-green-700/30')}
+              className={cn(
+                'space-y-1 rounded-lg border p-3',
+                isUnsafe ? 'border-red-700/30' : 'border-green-700/30'
+              )}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
-                    className={cn('h-3 w-3 rounded-md', body.type === 'star' ? 'bg-yellow-400' : body.type === 'planet' ? 'bg-orange-400' : 'bg-blue-400')}
+                    className={cn(
+                      'h-3 w-3 rounded-md',
+                      body.type === 'star'
+                        ? 'bg-yellow-400'
+                        : body.type === 'planet'
+                          ? 'bg-orange-400'
+                          : 'bg-blue-400'
+                    )}
                   />
                   <span className="font-medium text-cyan-100">{body.name}</span>
                 </div>
-                <span className={cn('text-[10px] font-medium', safetyColor)}>
-                  {safetyLabel}
-                </span>
+                <span className={cn('text-[10px] font-medium', safetyColor)}>{safetyLabel}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-[10px] text-cyan-300/60">
@@ -595,9 +612,7 @@ function SystemsView({
                   {isScanned ? (
                     <span className="font-mono text-green-300">Scanned</span>
                   ) : scanningId === body.id ? (
-                    <span className="font-mono text-cyan-300">
-                      {formatDuration(scanRemaining)}
-                    </span>
+                    <span className="font-mono text-cyan-300">{formatDuration(scanRemaining)}</span>
                   ) : (
                     <button
                       className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-[10px] font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
@@ -637,10 +652,20 @@ function SystemsView({
                               `border-${element?.rarity}-700/30 ${RARITY_BG[element?.rarity ?? 'common']}`
                             )}
                           >
-                            <span className={cn('font-mono font-bold', rarityColor(element?.rarity ?? 'common'))}>
+                            <span
+                              className={cn(
+                                'font-mono font-bold',
+                                rarityColor(element?.rarity ?? 'common')
+                              )}
+                            >
                               {element?.symbol || el.symbol}
                             </span>
-                            <span className={cn('font-mono text-xs', rarityColor(element?.rarity ?? 'common'))}>
+                            <span
+                              className={cn(
+                                'font-mono text-xs',
+                                rarityColor(element?.rarity ?? 'common')
+                              )}
+                            >
                               {el.extractionDuration}s
                             </span>
                           </div>
@@ -670,11 +695,16 @@ function SystemsView({
                   disabled={isUnsafe || body.type === 'star'}
                   onClick={() => handleLand(body)}
                 >
-                  {isUnsafe ? '⚠ Unsafe — Soft Fail' : body.type === 'star' ? 'Star (no landing)' : 'Land'}
+                  {isUnsafe
+                    ? '⚠ Unsafe — Soft Fail'
+                    : body.type === 'star'
+                      ? 'Star (no landing)'
+                      : 'Land'}
                 </button>
                 {isUnsafe && (
                   <p className="mt-1 text-[10px] text-red-400/70">
-                    Soft-failure recovery: ship destroyed, cargo wiped, towed back to previous Spaceport (no Game Over reset).
+                    Soft-failure recovery: ship destroyed, cargo wiped, towed back to previous
+                    Spaceport (no Game Over reset).
                   </p>
                 )}
               </div>
@@ -700,8 +730,11 @@ function CargoView({
   const [miningElement, setMiningElement] = useState<PeriodicElement | null>(null);
   const [cycleRemaining, setCycleRemaining] = useState(0);
   const [unitsMinedThisSession, setUnitsMinedThisSession] = useState(0);
-  const { tap: mineTap, secondsPerTap: mineSecondsPerTap, comboTier: mineCombo } =
-    useCadenceClicker();
+  const {
+    tap: mineTap,
+    secondsPerTap: mineSecondsPerTap,
+    comboTier: mineCombo,
+  } = useCadenceClicker();
 
   // Continuous background idle mining timer — accumulates units every cycle
   useEffect(() => {
@@ -762,7 +795,9 @@ function CargoView({
       <h2 className="text-sm font-semibold text-cyan-300">Cargo Hold (Unlimited)</h2>
 
       <div className="max-h-[40vh] space-y-3 overflow-y-auto">
-        {cargo.length === 0 && <p className="py-4 text-center text-[10px] text-slate-500">Empty hold</p>}
+        {cargo.length === 0 && (
+          <p className="py-4 text-center text-[10px] text-slate-500">Empty hold</p>
+        )}
         {cargo.map((slot) => {
           const element = ELEMENTS.find((e) => e.symbol === slot.symbol);
           if (!element) return null;
@@ -788,14 +823,16 @@ function CargoView({
                 <span className="font-mono text-xs text-cyan-300">{slot.quantity}</span>
               </div>
               <div className="mt-2 text-[10px] text-cyan-200/60">
-                <p className="text-[10px] text-cyan-200">Value: {formatCredits(element.baselineValue * slot.quantity)}</p>
+                <p className="text-[10px] text-cyan-200">
+                  Value: {formatCredits(element.baselineValue * slot.quantity)}
+                </p>
               </div>
             </div>
           );
         })}
       </div>
 
-      <div className="mt-3 rounded-lg border border-cyan-700/30 bg-cyan-900/10 p-3 space-y-3">
+      <div className="mt-3 space-y-3 rounded-lg border border-cyan-700/30 bg-cyan-900/10 p-3">
         <p className="mb-2 text-[10px] font-medium text-cyan-300">Mine Element</p>
         <div className="max-h-[180px] space-y-1 overflow-y-auto">
           {ELEMENTS.slice(0, 20).map((element) => {
@@ -805,10 +842,12 @@ function CargoView({
               <button
                 key={element.symbol}
                 onClick={() =>
-                  isActive && miningElement?.symbol === element.symbol ? null : handleStartMining(element)
+                  isActive && miningElement?.symbol === element.symbol
+                    ? null
+                    : handleStartMining(element)
                 }
                 className={cn(
-                  'flex flex-col items-center gap-1 rounded px-2 py-1 text-[10px] border',
+                  'flex flex-col items-center gap-1 rounded border px-2 py-1 text-[10px]',
                   `border-${element.rarity}-700/30 bg-slate-900/20`,
                   isActive ? 'border-cyan-500/80 bg-cyan-900/40 text-cyan-100' : 'text-slate-300'
                 )}
@@ -821,7 +860,7 @@ function CargoView({
         </div>
 
         {miningElement ? (
-          <div className="space-y-2 pt-2 border-t border-cyan-700/30">
+          <div className="space-y-2 border-t border-cyan-700/30 pt-2">
             <div className="flex items-center justify-between text-[10px]">
               <span className={cn('font-medium', rarityColor(miningElement.rarity))}>
                 {miningElement.name} ({miningElement.symbol})
@@ -836,7 +875,8 @@ function CargoView({
                 style={{
                   width: `${Math.max(
                     0,
-                    ((miningElement.extractionDuration - cycleRemaining) / miningElement.extractionDuration) *
+                    ((miningElement.extractionDuration - cycleRemaining) /
+                      miningElement.extractionDuration) *
                       100
                   )}%`,
                 }}
@@ -853,7 +893,7 @@ function CargoView({
             </button>
           </div>
         ) : (
-          <p className="text-[10px] text-slate-500/60 text-center mt-2">
+          <p className="mt-2 text-center text-[10px] text-slate-500/60">
             Select an element to begin continuous background idle mining.
           </p>
         )}
@@ -868,8 +908,8 @@ function MarketView({ cargoHold }: { cargoHold: { symbol: string; quantity: numb
     <div className="space-y-4 p-4">
       <h2 className="text-sm font-semibold text-cyan-300">Spaceport Market</h2>
       <p className="mb-3 text-[10px] text-cyan-300">
-        Static seeded Bid/Ask prices for Periodic Table elements. Precalculated at world
-        creation — never fluctuate dynamically.
+        Static seeded Bid/Ask prices for Periodic Table elements. Precalculated at world creation —
+        never fluctuate dynamically.
       </p>
       <div className="mb-4 grid grid-cols-2 gap-3">
         {MARKET_ITEMS.map((el) => {
@@ -927,7 +967,9 @@ function CodexView({
   codex: CodexState;
   prestige?: PersistentCommandDrawerProps['prestige'];
 }) {
-  const [discovered, setDiscovered] = useState<Set<number>>(new Set(initialCodex.discoveredElements));
+  const [discovered, setDiscovered] = useState<Set<number>>(
+    new Set(initialCodex.discoveredElements)
+  );
   const [completed, setCompleted] = useState(initialCodex.completed);
   const [victory, setVictory] = useState(false);
   const [demoStage, setDemoStage] = useState<'mid' | 'near' | null>(null); // storybook demo presets
@@ -957,13 +999,9 @@ function CodexView({
     }
   };
 
-  useEffect(() => {
-    const n = new Set(initialCodex.discoveredElements);
-    if (n.size !== discovered.size || n !== discovered) {
-      setDiscovered(n);
-      setCompleted(initialCodex.completed);
-    }
-  }, [initialCodex.discoveredElements]);
+  // Codex state is initialized from props at mount (Storybook arg changes after mount
+  // are not applied — acceptable for storyboard demos).
+  void initialCodex;
 
   return (
     <div className="space-y-4 p-4">
@@ -984,16 +1022,14 @@ function CodexView({
       </div>
 
       {completed && !victory && (
-        <div className="rounded-lg border border-yellow-700/30 bg-yellow-900/10 p-3 mb-3">
-          <p className="text-[10px] font-medium text-yellow-400">
-            ENDLESS PLAY MODE UNLOCKED
-          </p>
+        <div className="mb-3 rounded-lg border border-yellow-700/30 bg-yellow-900/10 p-3">
+          <p className="text-[10px] font-medium text-yellow-400">ENDLESS PLAY MODE UNLOCKED</p>
         </div>
       )}
 
       {/* Prestige counters */}
       {prestige && (
-        <div className="mt-1 mb-3 grid grid-cols-3 gap-2">
+        <div className="mb-3 mt-1 grid grid-cols-3 gap-2">
           <div className="rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-2">
             <p className="text-[10px] font-medium text-cyan-300">Systems Discovered</p>
             <p className="font-mono text-lg text-cyan-100">{prestige.systemsDiscovered}</p>
@@ -1010,7 +1046,7 @@ function CodexView({
       )}
 
       {/* Storybook demo presets — drive the interactive grid states */}
-      <div className="border-t border-slate-700/50 pt-3 space-y-1">
+      <div className="space-y-1 border-t border-slate-700/50 pt-3">
         <p className="mb-1 text-[10px] font-medium text-slate-400">Demo presets</p>
         <div className="flex gap-2">
           <button
@@ -1055,18 +1091,18 @@ function CodexView({
 
       {victory && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-[hsl(var(--card))] p-6 shadow-2xl shadow-black/30 space-y-3">
+          <div className="w-full max-w-md space-y-3 rounded-2xl bg-[hsl(var(--card))] p-6 shadow-2xl shadow-black/30">
             <h2 className="text-xl font-bold text-green-400">
               <Target className="mr-2 h-5 w-5" /> Codex Complete
             </h2>
-            <p className="text-2xl font-bold text-green-400 text-center">All 118 Elements Discovered!</p>
-            <p className="text-[10px] text-cyan-300/60 text-center">
-              Endless Play Mode Unlocked
+            <p className="text-center text-2xl font-bold text-green-400">
+              All 118 Elements Discovered!
             </p>
+            <p className="text-center text-[10px] text-cyan-300/60">Endless Play Mode Unlocked</p>
             <div className="mt-4 flex gap-2">
               <button
                 onClick={() => setVictory(false)}
-                className="flex-1 rounded-lg py-2.5 text-sm font-medium bg-cyan-600 text-white active:bg-cyan-700"
+                className="flex-1 rounded-lg bg-cyan-600 py-2.5 text-sm font-medium text-white active:bg-cyan-700"
               >
                 <Rocket className="mr-1 h-4 w-4" /> Continue Endless Play
               </button>
@@ -1106,7 +1142,10 @@ const PersistentCommandDrawer = ({
       <DrawerTrigger asChild>
         <button
           className="flex w-full items-center justify-center gap-2 rounded-md bg-cyan-600 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-600/30"
-          onClick={() => { const next = viewOrder[(viewIndex + 1) % viewOrder.length]; setActiveView(next); }}
+          onClick={() => {
+            const next = viewOrder[(viewIndex + 1) % viewOrder.length];
+            setActiveView(next);
+          }}
         >
           <Zap className="h-4 w-4" /> {viewLabel[activeView]}
         </button>
@@ -1119,7 +1158,9 @@ const PersistentCommandDrawer = ({
           <RouteView route={initialRoute} credits={credits} energy={energy} />
         )}
         {activeView === 'systems' && <SystemsView bodiesScanned={bodiesScanned} />}
-        {activeView === 'cargo' && <CargoView cargoHold={cargoHold} codex={codex} prestige={prestige} />}
+        {activeView === 'cargo' && (
+          <CargoView cargoHold={cargoHold} codex={codex} prestige={prestige} />
+        )}
         {activeView === 'market' && <MarketView cargoHold={cargoHold} />}
         {activeView === 'codex' && <CodexView codex={codex} prestige={prestige} />}
       </DrawerContent>

@@ -94,9 +94,7 @@ function DebugConsoleView({
   filter: 'ALL' | 'ENGINE' | 'ECONOMY' | 'NAVIGATION';
   setFilter: (f: 'ALL' | 'ENGINE' | 'ECONOMY' | 'NAVIGATION') => void;
 }) {
-  const filteredLogs = MOCK_LOGS.filter(
-    (log) => (filter === 'ALL' ? true : log.level === filter)
-  );
+  const filteredLogs = MOCK_LOGS.filter((log) => (filter === 'ALL' ? true : log.level === filter));
 
   return (
     <div className="fixed inset-0 z-[100] flex flex-col bg-black/90">
@@ -258,7 +256,7 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
   );
 
   const resetConfirm = (
-    <div className="rounded-xl border border-red-700/50 bg-red-900/30 p-4 space-y-3">
+    <div className="space-y-3 rounded-xl border border-red-700/50 bg-red-900/30 p-4">
       <p className="mb-2 text-sm font-medium text-amber-300">New Run / Reset</p>
       <p className="text-[10px] text-cyan-200/60">
         Confirming will wipe Credits, Cargo Hold, and the full 118-element Discovery Codex. The run
@@ -267,13 +265,13 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
       <div className="mt-2 flex gap-2">
         <button
           onClick={handleConfirmReset}
-          className="flex-1 rounded-lg py-2 text-sm font-medium bg-red-600 text-white active:bg-red-700"
+          className="flex-1 rounded-lg bg-red-600 py-2 text-sm font-medium text-white active:bg-red-700"
         >
           <AlertTriangle className="mr-1 h-4 w-4" /> Confirm Reset
         </button>
         <button
           onClick={() => setShowResetConfirm(false)}
-          className="flex-1 rounded-lg py-2 text-sm font-medium border border-cyan-700/50 bg-cyan-900/30 text-cyan-300 active:bg-cyan-800/30"
+          className="flex-1 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 active:bg-cyan-800/30"
         >
           Cancel
         </button>
@@ -282,7 +280,7 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
   );
 
   const runStatus = (
-    <div className="rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3 space-y-1">
+    <div className="space-y-1 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
       <p className="text-[10px] font-medium text-cyan-300">Run State</p>
       <div className="space-y-1 text-[10px] text-cyan-200">
         <div className="flex justify-between">
@@ -295,7 +293,9 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
         </div>
         <div className="flex justify-between">
           <span className="text-slate-400">Energy</span>
-          <span className="font-mono text-cyan-300">{runState.energy} / {INITIAL_ENERGY} EN</span>
+          <span className="font-mono text-cyan-300">
+            {runState.energy} / {INITIAL_ENERGY} EN
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="text-slate-400">Discovery Codex</span>
@@ -322,7 +322,7 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
                 className="flex items-center justify-between py-2 text-sm font-medium text-cyan-300 hover:text-cyan-100"
               >
                 <span>iOS Install Guide</span>
-                <Smartphone className="h-4 w-4 ml-2" />
+                <Smartphone className="ml-2 h-4 w-4" />
               </button>
               {showInstallGuide && iOSGuide}
             </div>
@@ -341,7 +341,10 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
             {/* Diagnostics */}
             <div className="space-y-2 border-t pt-4">
               <h3 className="text-sm font-medium text-cyan-300">Diagnostics</h3>
-              <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 py-2 text-sm font-medium text-white active:bg-cyan-700" onClick={handleForceUpdate}>
+              <button
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 py-2 text-sm font-medium text-white active:bg-cyan-700"
+                onClick={handleForceUpdate}
+              >
                 <Wrench className="h-4 w-4" /> Force UI Update (Clear Cache & Preserve Save)
               </button>
             </div>
@@ -349,7 +352,10 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
             {/* New Run / Reset */}
             <div className="space-y-2 border-t pt-4">
               <h3 className="text-sm font-medium text-amber-300">New Run / Reset</h3>
-              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-700/50 bg-amber-900/30 py-2 text-sm font-medium text-amber-300 hover:bg-amber-800/30 active:bg-amber-900" onClick={handleNewRun}>
+              <button
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-700/50 bg-amber-900/30 py-2 text-sm font-medium text-amber-300 hover:bg-amber-800/30 active:bg-amber-900"
+                onClick={handleNewRun}
+              >
                 <Rocket className="h-4 w-4" /> New Run / Reset
               </button>
               {showResetConfirm && resetConfirm}
@@ -367,9 +373,7 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
               >
                 v0.1.0-alpha <span className="text-cyan-400/50">(tap 5× for Debug)</span>
               </button>
-              <p className="mt-1 text-[10px] text-cyan-300/40">
-                Version taps: {versionTaps} / 5
-              </p>
+              <p className="mt-1 text-[10px] text-cyan-300/40">Version taps: {versionTaps} / 5</p>
             </div>
           </div>
         </div>

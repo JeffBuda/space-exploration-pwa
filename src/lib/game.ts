@@ -30,7 +30,10 @@ export const RARITY_RING: Record<ElementRarity, string> = {
 };
 
 export function formatCredits(credits: number): string {
-  return Math.floor(credits).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  return Math.floor(credits).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 }
 
 export function formatDuration(seconds: number): string {
