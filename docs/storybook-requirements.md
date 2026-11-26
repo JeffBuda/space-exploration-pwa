@@ -6,9 +6,9 @@ The game will be deployed to the root of the GitHub Pages site. A separate sub-U
 
 ## URL Layout
 
-| Asset | URL |
-|-------|-----|
-| Game | `/` |
+| Asset     | URL           |
+| --------- | ------------- |
+| Game      | `/`           |
 | Storybook | `/storybook/` |
 
 ## Tech Stack
