@@ -167,12 +167,13 @@ const SystemMenuAndDiagnostics = ({
 
             {/* Version footer */}
             <div className="border-t pt-4 text-center">
-              <p
-                className="text-xs text-cyan-300/60 cursor-pointer"
+              <button
+                type="button"
+                className="m-0 p-0 border-none bg-none text-xs text-cyan-300/60 font-normal text-left align-baseline"
                 onClick={handleVersionTap}
               >
                 v0.1.0-alpha <span className="text-cyan-400/50">(tap 5× for Debug)</span>
-              </p>
+              </button>
               <p className="text-[10px] text-cyan-300/40 mt-1">
                 Version taps: {versionTaps} / 5
               </p>

@@ -139,6 +139,7 @@ const StarMapCanvas = ({
   const handleEngageWarp = () => {
     if (insufficientEnergy || route.length < 2) return;
     setTransit(true);
+    setRemainingSeconds(totalTime);
     setSelectedStar(undefined);
   };
 
@@ -183,7 +184,6 @@ const StarMapCanvas = ({
           setTransit(false);
         }
       }, 1000);
-      setRemainingSeconds(totalTime);
     }
     return () => {
       if (intervalId !== null) window.clearInterval(intervalId);
