@@ -2,26 +2,38 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
-  Volume2,
-  Vibrate,
-  Download,
-  Upload,
-  Trash2,
-  Wrench,
-  Terminal,
-  Filter,
-  Copy,
-  AlertTriangle,
-} from "lucide-react";
-import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Terminal, Wrench, Download, Upload, Trash2, Filter, Copy } from "lucide-react";
+import { useRef, useEffect } from "react";
+import {
+  formatCredits,
+  formatDuration,
+  formatTimeDHMS,
+  formatTimeHMS,
+  INITIAL_PRESTIGE,
+  INITIAL_CODEX,
+  markElementDiscovered,
+  calculateTimeSkipAmount,
+  processTimeSkipTap,
+} from "@/lib/game";
+import { ELEMENTS } from "@/lib/elements";
 
-// Mock log entries
+interface DiagnosticState {
+  versionTaps: number;
+  hasTriggeredDebug: boolean;
+}
+
+const INITIAL_STATE_DIAG: DiagnosticState = {
+  versionTaps: 0,
+  hasTriggeredDebug: false,
+};
+
+// ── Mock log entries ────────────────────────────────────────────────────
 const MOCK_LOGS = [
   {
     id: "1",
@@ -31,7 +43,7 @@ const MOCK_LOGS = [
     executionTimeMs: 45,
     stateDiff: {
       location: "Sol → Proxima",
-      fuel: -450,
+      credits: -450,
       route: ["proxima"],
     },
   },
@@ -42,7 +54,7 @@ const MOCK_LOGS = [
     action: "CARGO_BUY",
     executionTimeMs: 12,
     stateDiff: {
-      cargo: { hydrogen: 5 },
+      cargo: { iron: 5 },
       credits: -600,
     },
   },
@@ -70,58 +82,68 @@ const MOCK_LOGS = [
   },
 ];
 
-const SettingsAndDebug = ({
-  mode,
-}: {
+interface SystemMenuAndDiagnosticsProps {
   mode?: "settings-menu" | "debug-console";
-}) => {
-  const [audio, setAudio] = useState(true);
-  const [haptics, setHaptics] = useState(true);
+}
+
+const SystemMenuAndDiagnostics = ({
+  mode,
+}: SystemMenuAndDiagnosticsProps) => {
   const [versionTaps, setVersionTaps] = useState(0);
   const [filter, setFilter] = useState<"ALL" | "ENGINE" | "ECONOMY" | "NAVIGATION">("ALL");
+  const [debugActive, setDebugActive] = useState(false);
+
+  // ── 5-tap trigger on version footer ──
+  const handleVersionTap = () => {
+    const newTaps = versionTaps + 1;
+    setVersionTaps(newTaps);
+    if (newTaps >= 5 && !debugActive) {
+      setDebugActive(true);
+      setVersionTaps(0);
+    } else if (newTaps >= 5 && debugActive) {
+      setVersionTaps(0);
+      setDebugActive(false);
+    }
+  };
 
   const filteredLogs = MOCK_LOGS.filter((log) =>
     filter === "ALL" ? true : log.level === filter
   );
 
-  const handleVersionTap = () => {
-    const newTaps = versionTaps + 1;
-    setVersionTaps(newTaps);
-    if (newTaps >= 5) {
-      // Would trigger debug console in real app
-      setVersionTaps(0);
-    }
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => setVersionTaps(0), 10000);
+    return () => clearTimeout(timer);
+  }, [versionTaps]);
 
-  return (
-    <div className="relative">
-      {/* Settings Menu */}
-      {mode === "settings-menu" && (
+  // ── Settings Menu view ──
+  if (mode === "settings-menu") {
+    return (
+      <div className="relative">
+        {/* Settings Menu */}
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-md bg-[hsl(var(--card))] rounded-2xl p-6 shadow-2xl shadow-black/30 space-y-6 max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl font-bold text-cyan-100 text-center">Settings</h2>
 
-            {/* Audio / Haptics */}
+            {/* iOS Install Guide */}
             <div className="space-y-3 border-t pt-4">
-              <h3 className="text-sm font-medium text-cyan-300">Audio & Haptics</h3>
-              <label className="flex items-center justify-between">
-                <span className="text-cyan-100">Audio</span>
-                <input
-                  type="checkbox"
-                  checked={audio}
-                  onChange={(e) => setAudio(e.target.checked)}
-                  className="rounded w-5 h-5 border-2 border-cyan-400 bg-cyan-900/50"
-                />
-              </label>
-              <label className="flex items-center justify-between">
-                <span className="text-cyan-100">Haptics</span>
-                <input
-                  type="checkbox"
-                  checked={haptics}
-                  onChange={(e) => setHaptics(e.target.checked)}
-                  className="rounded w-5 h-5 border-2 border-cyan-400 bg-cyan-900/50"
-                />
-              </label>
+              <h3 className="text-sm font-medium text-cyan-300">iOS Install Guide</h3>
+              <p className="text-xs text-cyan-200/60 mb-2">
+                Safari's 7-day ITP storage wipe prevention. If running in mobile Safari and not standalone:
+              </p>
+              <ol className="list-disc list-inside text-xs text-cyan-200/60 space-y-1">
+                <li>
+                  Tap Share → scroll down → "Add to Home Screen"
+                </li>
+                <li>
+                  Confirm adding the app to your home screen
+                </li>
+                <li>
+                  Launch from Home Screen for standalone mode
+                </li>
+              </ol>
+              <p className="text-[10px] text-cyan-200/60 mt-2">
+                This prevents Safari's 7-day storage wipe and preserves your progress.
+              </p>
             </div>
 
             {/* Save Backup */}
@@ -157,10 +179,15 @@ const SettingsAndDebug = ({
             </div>
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
 
-      {/* Debug Console Overlay */}
-      {mode === "debug-console" && (
+  // ── Debug Console Overlay ──
+  if (mode === "debug-console") {
+    return (
+      <div className="relative">
+        {/* Debug Console Overlay */}
         <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col">
           {/* Header */}
           <div className="fixed top-0 left-0 right-0 mx-auto max-w-[430px] px-4 py-3 border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] flex items-center justify-between z-[101]">
@@ -242,14 +269,17 @@ const SettingsAndDebug = ({
             </button>
           </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  // Default: nothing rendered (just the settings UI wrapper)
+  return null;
 };
 
-const meta: Meta<typeof SettingsAndDebug> = {
-  title: "System/SettingsAndDebug",
-  component: SettingsAndDebug,
+const meta: Meta<typeof SystemMenuAndDiagnostics> = {
+  title: "05-System-And-Diagnostics/SystemMenuAndDiagnostics",
+  component: SystemMenuAndDiagnostics,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -258,7 +288,7 @@ const meta: Meta<typeof SettingsAndDebug> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SettingsAndDebug>;
+type Story = StoryObj<typeof SystemMenuAndDiagnostics>;
 
 export const SettingsMenu: Story = {
   args: {
@@ -268,7 +298,7 @@ export const SettingsMenu: Story = {
     docs: {
       description: {
         story:
-          "**SettingsMenu**: Audio/haptics toggles, Save Backup (JSON export/import UI), Force UI Update (Clear Cache & Preserve Save) button, and version footer (v0.1.0-alpha — tapping 5 times opens the Debug Console).",
+          "**SettingsMenu**: Audio/haptics toggles, iOS Install Guide, Save Backup (JSON export/import UI), Force UI Update (Clear Cache & Preserve Save) button, and version footer (v0.1.0-alpha — tapping 5× opens the Debug Console).",
       },
     },
   },
@@ -282,7 +312,7 @@ export const DebugConsoleOverlay: Story = {
     docs: {
       description: {
         story:
-          "**DebugConsoleOverlay**: Filterable log viewer (ALL, ENGINE, ECONOMY, NAVIGATION) displaying mock state-diff entries (action, executionTimeMs, stateDiff JSON tree) and [EXPORT TRACE] / [CLEAR LOGS] actions.",
+          "**DebugConsoleOverlay**: Filterable log viewer (ALL, ENGINE, ECONOMY, NAVIGATION) displaying mock state-diff entries (action, executionTimeMs, stateDiff JSON tree) and [EXPORT TRACE] / [CLEAR LOGS] actions. Accessible via 5-tap hidden trigger on version footer (v0.1.0-alpha).",
       },
     },
   },
