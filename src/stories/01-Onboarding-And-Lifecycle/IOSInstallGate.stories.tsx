@@ -9,7 +9,7 @@ interface IOSInstallGateProps {
 }
 
 const IOSInstallGate = ({ onDismiss, isVisible = true }: IOSInstallGateProps) => {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -25,7 +25,7 @@ const IOSInstallGate = ({ onDismiss, isVisible = true }: IOSInstallGateProps) =>
   const isStandalone =
     typeof window !== 'undefined' &&
     (window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true);
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true);
 
   if (isStandalone) return null;
 

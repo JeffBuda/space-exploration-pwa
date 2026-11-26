@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import {
   Zap,
@@ -22,13 +22,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { ELEMENTS, type PeriodicElement, type ElementRarity } from '@/lib/elements';
+import { ELEMENTS, type PeriodicElement } from '@/lib/elements';
 import {
   formatCredits,
   calculateWarpEnergyCost,
   calculateTravelTimeSeconds,
   formatDuration,
+  RARITY_COLORS,
+  RARITY_BG,
 } from '@/lib/game';
+import { useCadenceClicker } from '@/hooks/useCadenceClicker';
 
 type View = 'route' | 'systems' | 'cargo' | 'market' | 'codex';
 
@@ -66,26 +69,6 @@ interface PersistentCommandDrawerProps {
   prestige?: { systemsDiscovered: number; planetsDiscovered: number; totalMined: number };
   /** Demo control: treat all bodies as already scanned (used by the Scanned Bodies story). */
   bodiesScanned?: boolean;
-}
-
-const RARITY_COLORS: Record<ElementRarity, string> = {
-  common: 'text-slate-300',
-  uncommon: 'text-cyan-300',
-  rare: 'text-amber-300',
-  epic: 'text-purple-300',
-  legendary: 'text-yellow-300',
-};
-
-const RARITY_BG: Record<ElementRarity, string> = {
-  common: 'bg-slate-900/30 border-slate-700/50',
-  uncommon: 'bg-cyan-900/30 border-cyan-700/50',
-  rare: 'bg-amber-900/30 border-amber-700/50',
-  epic: 'bg-purple-900/30 border-purple-700/50',
-  legendary: 'bg-yellow-900/30 border-yellow-700/50',
-};
-
-function rarityColor(rarity: ElementRarity): string {
-  return RARITY_COLORS[rarity];
 }
 
 const EDGES = [
@@ -202,50 +185,6 @@ const MARKET_ITEMS = [
   { symbol: 'He', name: 'Helium', bid: 15, ask: 20 },
   { symbol: 'C', name: 'Carbon', bid: 30, ask: 40 },
 ];
-
-// ── Cadence-scaling clicker hook ──────────────────────────────────────────
-// Initial tap = -1s, scaling exponentially via Math.pow(1.35, comboTier),
-// decaying back to 1s when tapping pauses (> 1s between taps).
-function useCadenceClicker() {
-  const [comboTier, setComboTier] = useState(0);
-  const [lastTap, setLastTap] = useState(0);
-  const [secondsPerTap, setSecondsPerTap] = useState(1);
-  const decayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearDecay = useCallback(() => {
-    if (decayTimer.current !== null) {
-      clearTimeout(decayTimer.current);
-      decayTimer.current = null;
-    }
-  }, []);
-
-  useEffect(() => () => clearDecay(), [clearDecay]);
-
-  const tap = useCallback(
-    (now: number) => {
-      clearDecay();
-      let newCombo: number;
-      if (now - lastTap > 1000) {
-        newCombo = 0;
-      } else {
-        newCombo = Math.min(comboTier + 1, 20);
-      }
-      setComboTier(newCombo);
-      setLastTap(now);
-      const skip = newCombo <= 0 ? 1 : Math.floor(Math.pow(1.35, newCombo));
-      setSecondsPerTap(skip);
-      decayTimer.current = setTimeout(() => {
-        setComboTier(0);
-        setSecondsPerTap(1);
-        decayTimer.current = null;
-      }, 1000);
-      return skip;
-    },
-    [comboTier, lastTap, clearDecay]
-  );
-
-  return { comboTier, lastTap, tap, secondsPerTap, clearDecay };
-}
 
 function buildHops(route: string[] | undefined): RouteHop[] {
   const hopList: RouteHop[] = [];
@@ -655,7 +594,7 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                             <span
                               className={cn(
                                 'font-mono font-bold',
-                                rarityColor(element?.rarity ?? 'common')
+                                RARITY_COLORS[element?.rarity ?? 'common']
                               )}
                             >
                               {element?.symbol || el.symbol}
@@ -663,7 +602,7 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                             <span
                               className={cn(
                                 'font-mono text-xs',
-                                rarityColor(element?.rarity ?? 'common')
+                                RARITY_COLORS[element?.rarity ?? 'common']
                               )}
                             >
                               {el.extractionDuration}s
@@ -812,7 +751,7 @@ function CargoView({
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg">
-                  <span className={cn('font-mono font-bold', rarityColor(element.rarity))}>
+                  <span className={cn('font-mono font-bold', RARITY_COLORS[element.rarity])}>
                     {element.symbol}
                   </span>
                 </div>
@@ -836,7 +775,7 @@ function CargoView({
         <p className="mb-2 text-[10px] font-medium text-cyan-300">Mine Element</p>
         <div className="max-h-[180px] space-y-1 overflow-y-auto">
           {ELEMENTS.slice(0, 20).map((element) => {
-            const rarityColor = RARITY_COLORS[element.rarity];
+            const rc = RARITY_COLORS[element.rarity];
             const isActive = miningElement?.symbol === element.symbol;
             return (
               <button
@@ -852,7 +791,7 @@ function CargoView({
                   isActive ? 'border-cyan-500/80 bg-cyan-900/40 text-cyan-100' : 'text-slate-300'
                 )}
               >
-                <span className={cn('font-mono font-bold', rarityColor)}>{element.symbol}</span>
+                <span className={cn('font-mono font-bold', rc)}>{element.symbol}</span>
                 <span className="text-[10px] text-cyan-300/60">{element.extractionDuration}s</span>
               </button>
             );
@@ -862,7 +801,7 @@ function CargoView({
         {miningElement ? (
           <div className="space-y-2 border-t border-cyan-700/30 pt-2">
             <div className="flex items-center justify-between text-[10px]">
-              <span className={cn('font-medium', rarityColor(miningElement.rarity))}>
+              <span className={cn('font-medium', RARITY_COLORS[miningElement.rarity])}>
                 {miningElement.name} ({miningElement.symbol})
               </span>
               <span className="font-mono text-cyan-300">
@@ -914,7 +853,7 @@ function MarketView({ cargoHold }: { cargoHold: { symbol: string; quantity: numb
       <div className="mb-4 grid grid-cols-2 gap-3">
         {MARKET_ITEMS.map((el) => {
           const element = ELEMENTS.find((e) => e.symbol === el.symbol);
-          const rc = element ? rarityColor(element.rarity) : 'text-slate-300';
+          const rc = element ? RARITY_COLORS[element.rarity] : 'text-slate-300';
           return (
             <div
               key={el.symbol}
