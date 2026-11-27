@@ -12,10 +12,14 @@ export default {
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
+          hover: 'hsl(var(--color-primary-hover))',
+          active: 'hsl(var(--color-primary-active))',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
+          hover: 'hsl(var(--color-secondary-hover))',
+          active: 'hsl(var(--color-secondary-active))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
@@ -38,11 +42,41 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+
+        /* ── Game status colors (semantic) ──────────────────────────── */
+        success: {
+          DEFAULT: 'hsl(var(--color-success))',
+          bg: 'hsl(var(--color-success-bg))',
+          border: 'hsl(var(--color-success-border))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--color-warning))',
+          bg: 'hsl(var(--color-warning-bg))',
+          border: 'hsl(var(--color-warning-border))',
+        },
+        danger: {
+          DEFAULT: 'hsl(var(--color-danger))',
+          bg: 'hsl(var(--color-danger-bg))',
+          border: 'hsl(var(--color-danger-border))',
+        },
+
+        /* ── Rarity colors (semantic, game-specific) ──────────────────── */
+        rarity: {
+          common: 'hsl(var(--color-rarity-common))',
+          uncommon: 'hsl(var(--color-rarity-uncommon))',
+          rare: 'hsl(var(--color-rarity-rare))',
+          epic: 'hsl(var(--color-rarity-epic))',
+          legendary: 'hsl(var(--color-rarity-legendary))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
     },
   },

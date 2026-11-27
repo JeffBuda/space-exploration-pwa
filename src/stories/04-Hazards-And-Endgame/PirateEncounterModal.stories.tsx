@@ -107,13 +107,13 @@ const PirateEncounterModal = ({
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-amber-400">
+            <h2 className="text-xl font-bold text-warning">
               <AlertTriangle className="mr-2 h-5 w-5" /> Pirate Interception
             </h2>
           </div>
           <button
             onClick={handleContinue}
-            className="rounded-lg p-1 text-cyan-200/60 transition-colors hover:bg-cyan-900/30"
+            className="rounded-lg p-1 text-secondary-foreground/60 transition-colors hover:bg-secondary/30"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />
@@ -121,41 +121,43 @@ const PirateEncounterModal = ({
         </div>
 
         {/* Report */}
-        <div className="mb-6 rounded-lg border border-amber-600/30 bg-amber-900/20 p-4">
-          <p className="text-[10px] font-medium text-amber-300">Mid-Hop Interception</p>
-          <p className="text-sm font-medium text-cyan-100">
+        <div className="mb-6 rounded-lg border border-warning bg-warning-bg/20 p-4">
+          <p className="text-[10px] font-medium text-warning">Mid-Hop Interception</p>
+          <p className="text-sm font-medium text-foreground">
             Your route was intercepted by pirates {formatHMS(45)} into your hop.
           </p>
-          <p className="mt-1 text-[10px] text-amber-300/60">
+          <p className="mt-1 text-[10px] text-warning/60">
             A random amount of cargo was stolen from your hold.
           </p>
         </div>
 
         {/* Stolen details */}
         {phase === 'failed' && stolen && (
-          <div className="mb-4 rounded-lg border border-amber-600/30 bg-amber-900/20 p-3">
-            <p className="mb-2 text-[10px] font-medium text-amber-300">Cargo Stolen</p>
+          <div className="mb-4 rounded-lg border border-warning bg-warning-bg/20 p-3">
+            <p className="mb-2 text-[10px] font-medium text-warning">Cargo Stolen</p>
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-amber-300">{stolen.name}</span>
-              <span className="text-[10px] text-amber-300/60">{stolen.symbol}</span>
+              <span className="text-sm font-medium text-warning">{stolen.name}</span>
+              <span className="text-[10px] text-warning/60">{stolen.symbol}</span>
             </div>
-            <p className="text-[10px] text-amber-300">
-              Quantity stolen: <span className="font-mono text-amber-400">{stolen.quantity}</span>
+            <p className="text-[10px] text-warning">
+              Quantity stolen: <span className="font-mono text-warning">{stolen.quantity}</span>
             </p>
           </div>
         )}
 
         {phase === 'evaded' && (
-          <div className="mb-4 rounded-lg border border-green-600/30 bg-green-900/30 p-3">
-            <p className="text-[10px] text-green-300">Evaded with 0 loss!</p>
+          <div className="mb-4 rounded-lg border border-success bg-success-bg/30 p-3">
+            <p className="text-[10px] text-success">Evaded with 0 loss!</p>
           </div>
         )}
 
         {/* Evasion cadence-scaling clicker mini-game */}
         {phase === 'ready' && (
-          <div className="mb-4 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
-            <p className="mb-2 text-[10px] font-medium text-cyan-300">Cadence-Scaling Evasion</p>
-            <p className="mb-2 text-[10px] text-cyan-200/60">
+          <div className="mb-4 rounded-lg border border-secondary bg-secondary/20 p-3">
+            <p className="mb-2 text-[10px] font-medium text-secondary-foreground">
+              Cadence-Scaling Evasion
+            </p>
+            <p className="mb-2 text-[10px] text-secondary-foreground/60">
               Tapping faster increases evasion probability. Failing to evade loses a random amount
               of Periodic Table cargo.
             </p>
@@ -163,14 +165,16 @@ const PirateEncounterModal = ({
             {/* Live evasion probability gauge */}
             <div className="mb-2">
               <div className="mb-1 flex items-center justify-between">
-                <span className="text-[10px] text-cyan-200/60">Evasion Probability</span>
-                <span className="font-mono text-xs text-cyan-300">
+                <span className="text-[10px] text-secondary-foreground/60">
+                  Evasion Probability
+                </span>
+                <span className="font-mono text-xs text-secondary-foreground">
                   {evasionGainedThisTap.toFixed(0)}%
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-700">
+              <div className="bg-surface h-2 w-full overflow-hidden rounded-full">
                 <div
-                  className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-200"
+                  className="h-full bg-gradient-to-r from-primary to-success transition-all duration-200"
                   style={{ width: `${Math.max(0, Math.min(100, evasionGainedThisTap))}%` }}
                 />
               </div>
@@ -178,20 +182,20 @@ const PirateEncounterModal = ({
 
             <div className="flex items-center justify-between gap-2">
               <button
-                className="flex-1 rounded-lg bg-gradient-to-br from-cyan-600 to-cyan-800 py-2 text-sm font-medium text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
+                className="flex-1 rounded-lg bg-gradient-to-br from-primary to-primary-active py-2 text-sm font-medium text-primary-foreground shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
                 onClick={handleAttemptEvade}
               >
                 <Zap className="mr-1 h-4 w-4" />
                 Tap to Build Speed
               </button>
               <button
-                className="flex-1 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+                className="flex-1 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
                 onClick={handleAttemptEvade}
               >
                 Attempt Evasion
               </button>
             </div>
-            <p className="mt-2 text-[10px] text-cyan-200/60">
+            <p className="mt-2 text-[10px] text-secondary-foreground/60">
               Combo Tier: {comboTier} · Seconds per tap: {secondsPerTap}s
             </p>
           </div>
@@ -203,8 +207,8 @@ const PirateEncounterModal = ({
             onClick={handleContinue}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'bg-cyan-600 text-white hover:bg-cyan-700',
-              'active:bg-cyan-800'
+              'bg-primary text-primary-foreground hover:bg-primary-hover',
+              'active:bg-primary-active'
             )}
           >
             <Trophy className="mr-1 h-4 w-4" /> Continue Mission
@@ -213,7 +217,7 @@ const PirateEncounterModal = ({
             onClick={handleContinue}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'border border-cyan-700/50 bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900'
+              'border border-secondary/50 bg-secondary/30 text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active'
             )}
           >
             <Menu className="mr-1 h-4 w-4" /> Main Menu

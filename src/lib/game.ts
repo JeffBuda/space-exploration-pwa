@@ -6,27 +6,27 @@ import { ELEMENTS, type PeriodicElement, type ElementRarity } from './elements';
 
 // ── Rarity visual helpers ────────────────────────────────────────────────
 export const RARITY_COLORS: Record<ElementRarity, string> = {
-  common: 'text-slate-300',
-  uncommon: 'text-cyan-300',
-  rare: 'text-amber-300',
-  epic: 'text-purple-300',
-  legendary: 'text-yellow-300',
+  common: 'text-rarity-common',
+  uncommon: 'text-secondary-foreground',
+  rare: 'text-warning',
+  epic: 'text-rarity-epic',
+  legendary: 'text-rarity-legendary',
 };
 
 export const RARITY_BG: Record<ElementRarity, string> = {
-  common: 'bg-slate-900/30 border-slate-700/50',
-  uncommon: 'bg-cyan-900/30 border-cyan-700/50',
-  rare: 'bg-amber-900/30 border-amber-700/50',
-  epic: 'bg-purple-900/30 border-purple-700/50',
-  legendary: 'bg-yellow-900/30 border-yellow-700/50',
+  common: 'bg-background/30 border-border/50',
+  uncommon: 'bg-secondary/30 border-secondary/50',
+  rare: 'bg-warning-bg/30 border-warning/50',
+  epic: 'bg-rarity-epic/30 border-rarity-epic/50',
+  legendary: 'bg-rarity-legendary/30 border-rarity-legendary/50',
 };
 
 export const RARITY_RING: Record<ElementRarity, string> = {
-  common: 'ring-slate-500',
-  uncommon: 'ring-cyan-500',
-  rare: 'ring-amber-500',
-  epic: 'ring-purple-500',
-  legendary: 'ring-yellow-500',
+  common: 'ring-rarity-common',
+  uncommon: 'ring-rarity-uncommon',
+  rare: 'ring-rarity-rare',
+  epic: 'ring-rarity-epic',
+  legendary: 'ring-rarity-legendary',
 };
 
 export function formatCredits(credits: number): string {

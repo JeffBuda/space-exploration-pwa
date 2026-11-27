@@ -10,7 +10,7 @@ interface ElementSelectorProps {
 export function ElementSelector({ selectedSymbol, onSelect }: ElementSelectorProps) {
   return (
     <div className="space-y-2">
-      <p className="text-xs font-medium text-cyan-300">Mine Element</p>
+      <p className="text-xs font-medium text-secondary-foreground">Mine Element</p>
       <div className="flex max-h-[150px] flex-wrap gap-1 overflow-y-auto">
         {ELEMENTS.map((element) => {
           const active = selectedSymbol === element.symbol;
@@ -22,14 +22,14 @@ export function ElementSelector({ selectedSymbol, onSelect }: ElementSelectorPro
               className={cn(
                 'flex flex-col items-center gap-1 rounded-lg border px-2 py-1.5 text-[10px]',
                 active
-                  ? `${RARITY_RING[element.rarity]} border-cyan-500/80 bg-cyan-900/40 text-cyan-100`
-                  : 'border-slate-600/50 bg-slate-900/20 text-slate-300 hover:border-cyan-500/30'
+                  ? `${RARITY_RING[element.rarity]} border-primary bg-secondary/40 text-foreground`
+                  : 'border-border/50 bg-background/20 text-rarity-common hover:border-primary/30'
               )}
             >
               <span className={cn('font-mono font-bold', RARITY_COLORS[element.rarity])}>
                 {element.symbol}
               </span>
-              <span className={cn(active ? 'text-cyan-400' : 'text-slate-500')}>
+              <span className={cn(active ? 'text-primary' : 'text-muted-foreground')}>
                 +{element.baselineValue}
               </span>
             </button>

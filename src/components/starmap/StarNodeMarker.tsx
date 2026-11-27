@@ -8,9 +8,9 @@ interface StarNodeMarkerProps {
 }
 
 const STATUS_VISUALS = {
-  current: { color: 'text-green-400', bg: 'bg-green-400/20', ring: 'ring-green-400' },
-  discovered: { color: 'text-cyan-300', bg: 'bg-cyan-900/30', ring: 'ring-cyan-400' },
-  unknown: { color: 'text-cyan-500/40', bg: 'bg-cyan-900/10', ring: 'ring-cyan-500' },
+  current: { color: 'text-success', bg: 'bg-success-bg/20', ring: 'ring-success' },
+  discovered: { color: 'text-secondary-foreground', bg: 'bg-secondary/30', ring: 'ring-primary' },
+  unknown: { color: 'text-primary/40', bg: 'bg-secondary/10', ring: 'ring-rarity-uncommon' },
 } as const;
 
 export function getStarVisual(node: StarNode, selected: boolean) {
@@ -22,7 +22,11 @@ export function getStarVisual(node: StarNode, selected: boolean) {
         : STATUS_VISUALS.unknown;
 
   if (selected) {
-    return { color: 'text-cyan-300', bg: 'bg-cyan-900/40', ring: 'ring-2 ring-cyan-400' };
+    return {
+      color: 'text-secondary-foreground',
+      bg: 'bg-secondary/40',
+      ring: 'ring-2 ring-primary',
+    };
   }
   return {
     color: base.color,

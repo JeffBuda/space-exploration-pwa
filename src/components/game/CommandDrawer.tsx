@@ -46,7 +46,7 @@ export function CommandDrawer({
   return (
     <Drawer snapPoints={[0.15, 0.35, 0.65]} activeSnapPoint={0.35}>
       <DrawerTrigger asChild>
-        <button className="flex w-full items-center justify-center gap-2 rounded-md bg-cyan-600 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-600/30">
+        <button className="flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/30">
           <Zap className="h-4 w-4" /> Actions
         </button>
       </DrawerTrigger>
@@ -56,8 +56,10 @@ export function CommandDrawer({
         <div className="space-y-3 p-3">
           <div className="space-y-2">
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-xs font-medium text-cyan-300">Cargo Hold (Unlimited)</p>
-              <span className="text-[10px] text-slate-400">{totalUnits} units</span>
+              <p className="text-xs font-medium text-secondary-foreground">
+                Cargo Hold (Unlimited)
+              </p>
+              <span className="text-[10px] text-muted-foreground">{totalUnits} units</span>
             </div>
             <CargoHoldList cargoHold={cargoHold} />
           </div>

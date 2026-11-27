@@ -24,10 +24,10 @@ export function RouteActions({
     <div className="mt-3">
       <button
         className={cn(
-          'flex w-full items-center justify-center gap-1 rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-cyan-600/30',
+          'flex w-full items-center justify-center gap-1 rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-primary/30',
           insufficientEnergy
-            ? 'cursor-not-allowed border border-cyan-500/50 bg-cyan-900/30 text-cyan-300 opacity-50'
-            : 'bg-cyan-600 text-white active:bg-cyan-700'
+            ? 'cursor-not-allowed border border-primary/50 bg-secondary/30 text-secondary-foreground opacity-50'
+            : 'bg-primary text-primary-foreground active:bg-primary-active'
         )}
         disabled={insufficientEnergy}
         onClick={onEngage}
@@ -35,11 +35,11 @@ export function RouteActions({
         <Command className="h-4 w-4" />
         Engage Warp
         {insufficientEnergy && (
-          <span className="ml-1 text-[10px] text-red-400">Insufficient Energy</span>
+          <span className="ml-1 text-[10px] text-danger">Insufficient Energy</span>
         )}
       </button>
       <button
-        className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+        className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
         onClick={onClearRoute}
       >
         <Cross className="h-4 w-4" /> Clear Route
