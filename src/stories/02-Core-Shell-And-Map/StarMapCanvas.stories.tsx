@@ -51,7 +51,7 @@ export const _02_SingleHopSelected: Story = {
 export const _03_MultiHopItinerary: Story = {
   name: '03_MultiHopItinerary',
   args: {
-    initialRoute: ['sol', 'proxima', 'epsilon'],
+    initialRoute: ['sol', 'proxima', 'kepler'],
     initialEnergy: 100,
     initialCredits: 100,
   },
@@ -59,7 +59,7 @@ export const _03_MultiHopItinerary: Story = {
     docs: {
       description: {
         story:
-          'Multi-hop contiguous route: Sol → Proxima → Epsilon Eridani. Route lines animate along active edges. Tail-severing supported via tapping earlier nodes. Engage Warp enabled if energy sufficient.',
+          'Multi-hop contiguous route: Sol → Proxima Centauri → Kepler-186 (93 EN total). Route lines animate along active edges. Tap an intermediate node to sever the tail, tap another reachable star to extend. Engage Warp enabled since energy is sufficient.',
       },
     },
   },
@@ -68,7 +68,7 @@ export const _03_MultiHopItinerary: Story = {
 export const _04_InsufficientEnergyBlocked: Story = {
   name: '04_InsufficientEnergyBlocked',
   args: {
-    initialRoute: ['sol', 'proxima', 'epsilon', 'cygnus'],
+    initialRoute: ['sol', 'proxima', 'kepler', 'cygnus'],
     initialEnergy: 50,
     initialCredits: 100,
   },
@@ -76,7 +76,7 @@ export const _04_InsufficientEnergyBlocked: Story = {
     docs: {
       description: {
         story:
-          'Insufficient energy: Engage Warp button disabled when totalRouteEnergyCost > currentEnergy. Shows red warning text.',
+          'Insufficient energy: route costs 188 EN against 50 EN available, so Engage Warp is disabled and shows a red warning text.',
       },
     },
   },
@@ -85,7 +85,7 @@ export const _04_InsufficientEnergyBlocked: Story = {
 export const _05_InTransitWithCancelNearestNode: Story = {
   name: '05_InTransitWithCancelNearestNode',
   args: {
-    initialRoute: ['sol', 'proxima', 'epsilon'],
+    initialRoute: ['sol', 'proxima', 'tauceti'],
     initialEnergy: 100,
     initialCredits: 100,
     initialPhase: 'in-transit',
@@ -94,7 +94,7 @@ export const _05_InTransitWithCancelNearestNode: Story = {
     docs: {
       description: {
         story:
-          'In transit: Active warp countdown with Cancel Hop (drops out at nearest node consuming hop energy) and live Exponential Time-Skip Clicker (-1s initial tap, scaling exponentially via Math.pow(1.35,comboTier), decaying to 1s when tapping pauses).',
+          'In transit: Active warp countdown for Sol → Proxima Centauri → Tau Ceti. Drawer shows hop progress bar with Cancel Hop and live Exponential Time-Skip Clicker (-1s initial tap, scaling via Math.pow(1.35,comboTier)).',
       },
     },
   },
@@ -103,7 +103,7 @@ export const _05_InTransitWithCancelNearestNode: Story = {
 export const _06_PirateAmbushEncounter: Story = {
   name: '06_PirateAmbushEncounter',
   args: {
-    initialRoute: ['sol', 'proxima', 'epsilon', 'cygnus'],
+    initialRoute: ['sol', 'proxima', 'kepler', 'cygnus'],
     initialEnergy: 100,
     initialCredits: 100,
     initialPhase: 'arrived',
