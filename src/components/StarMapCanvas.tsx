@@ -28,7 +28,7 @@ export function StarMapCanvas({
   });
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#0d1117]">
+    <div className="relative h-screen overflow-x-hidden bg-[#0d1117]">
       {/* Top HUD Bar */}
       <TopHudBar
         systemName={map.currentSystem}
