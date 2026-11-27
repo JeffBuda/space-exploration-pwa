@@ -1,4 +1,3 @@
-import * as Vaul from 'vaul';
 import { StarMapController } from '@/hooks/useStarMap';
 import { cn } from '@/lib/utils';
 import { RouteSummary } from './RouteSummary';
@@ -69,28 +68,26 @@ function RouteDrawerBody({ map }: RouteDrawerBodyProps) {
   );
 }
 
-export function RoutePlannerDrawer({ snapPoint, onSnapPointChange, map }: RoutePlannerDrawerProps) {
+/**
+ * Route planner drawer, pinned to the bottom of the viewport at the peek snap point.
+ * Kept as a plain fixed panel (rather than a portal-based Vaul drawer) so it renders
+ * deterministically in isolated Storybook canvases as well as the app shell.
+ */
+export function RoutePlannerDrawer({ map }: RoutePlannerDrawerProps) {
   return (
-    <Vaul.Drawer.Root
-      snapPoints={[0.15, 0.35, 0.65]}
-      activeSnapPoint={snapPoint}
-      setActiveSnapPoint={onSnapPointChange}
-      modal={false}
-      dismissible={false}
-      noBodyStyles
+    <div
+      className={cn(
+        'fixed inset-x-0 bottom-0 z-50 max-h-[65vh] overflow-y-auto rounded-t-xl border bg-card text-card-foreground shadow-lg',
+        'pointer-events-auto overscroll-contain'
+      )}
+      data-testid="route-planner-drawer"
     >
-      <Vaul.Drawer.Portal>
-        <Vaul.Drawer.Overlay className="fixed inset-0 z-[50] bg-black/70" />
-        <Vaul.Drawer.Content
-          className={cn(
-            'fixed inset-x-0 bottom-0 z-50 max-h-[65vh] overflow-y-auto rounded-t-xl border bg-card text-card-foreground shadow-lg',
-            'overscroll-contain',
-            'pointer-events-auto'
-          )}
-        >
-          <RouteDrawerBody map={map} />
-        </Vaul.Drawer.Content>
-      </Vaul.Drawer.Portal>
-    </Vaul.Drawer.Root>
+      <div className="mb-1 flex justify-center pt-2">
+        <div className="h-1 w-10 rounded-full bg-muted-foreground/30" />
+      </div>
+      <div className="px-4 pb-4">
+        <RouteDrawerBody map={map} />
+      </div>
+    </div>
   );
 }
