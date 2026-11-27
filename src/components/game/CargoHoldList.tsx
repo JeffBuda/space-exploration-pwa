@@ -7,16 +7,16 @@ interface CargoHoldListProps {
 }
 
 const RARITY_BORDER: Record<ElementRarity, string> = {
-  common: 'border-slate-700/30',
-  uncommon: 'border-cyan-700/30',
-  rare: 'border-amber-700/30',
-  epic: 'border-purple-700/30',
-  legendary: 'border-yellow-700/30',
+  common: 'border-border-subtle',
+  uncommon: 'border-secondary',
+  rare: 'border-warning-border',
+  epic: 'border-rarity-epic',
+  legendary: 'border-rarity-legendary',
 };
 
 export function CargoHoldList({ cargoHold }: CargoHoldListProps) {
   if (cargoHold.length === 0) {
-    return <p className="py-2 text-center text-xs text-slate-500">Empty hold</p>;
+    return <p className="py-2 text-center text-xs text-muted-foreground">Empty hold</p>;
   }
   return (
     <div className="max-h-[40vh] space-y-1 overflow-y-auto">
@@ -37,9 +37,9 @@ export function CargoHoldList({ cargoHold }: CargoHoldListProps) {
               <span className={cn('font-mono font-bold', RARITY_COLORS[rarity])}>
                 {element.symbol}
               </span>
-              <span className="text-xs text-cyan-100">{element.name}</span>
+              <span className="text-xs text-foreground">{element.name}</span>
             </div>
-            <span className="font-mono text-xs text-cyan-200">{slot.quantity}</span>
+            <span className="font-mono text-xs text-secondary-foreground">{slot.quantity}</span>
           </div>
         );
       })}

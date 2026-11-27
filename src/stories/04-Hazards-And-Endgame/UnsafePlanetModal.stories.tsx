@@ -34,13 +34,13 @@ const UnsafePlanetModal = ({
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-red-400">
+            <h2 className="text-xl font-bold text-danger">
               <AlertTriangle className="mr-2 h-5 w-5" /> Ship Destroyed
             </h2>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="rounded-lg p-1 text-cyan-200/60 transition-colors hover:bg-cyan-900/30"
+            className="rounded-lg p-1 text-secondary-foreground/60 transition-colors hover:bg-secondary/30"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />
@@ -48,45 +48,48 @@ const UnsafePlanetModal = ({
         </div>
 
         {/* Report */}
-        <div className="mb-6 rounded-lg border border-red-600/30 bg-red-900/20 p-4">
-          <p className="text-[10px] font-medium text-red-300">Unsafe Planet Landing</p>
-          <p className="text-sm font-medium text-cyan-100">
+        <div className="mb-6 rounded-lg border border-danger bg-danger-bg/20 p-4">
+          <p className="text-[10px] font-medium text-danger">Unsafe Planet Landing</p>
+          <p className="text-sm font-medium text-foreground">
             Your ship was destroyed upon landing on this planet.
           </p>
-          <p className="mt-1 text-[10px] text-red-300/60">
+          <p className="mt-1 text-[10px] text-danger/60">
             Cargo Hold contents have been completely wiped.
           </p>
         </div>
 
         {/* Lost Cargo */}
-        <div className="mb-4 rounded-lg border border-red-600/30 bg-red-900/20 p-3">
-          <p className="mb-2 text-[10px] font-medium text-red-300">Cargo Wiped</p>
+        <div className="mb-4 rounded-lg border border-danger bg-danger-bg/20 p-3">
+          <p className="mb-2 text-[10px] font-medium text-danger">Cargo Wiped</p>
           {lostCargo.map((item) => {
             const element = ELEMENTS.find((e) => e.symbol === item.symbol);
             return (
-              <div key={item.symbol} className="flex justify-between text-[10px] text-cyan-200">
+              <div
+                key={item.symbol}
+                className="flex justify-between text-[10px] text-secondary-foreground"
+              >
                 <span>
                   {element?.name || item.symbol} ({item.symbol})
                 </span>
-                <span className="font-mono text-red-400">{item.quantity}</span>
+                <span className="font-mono text-danger">{item.quantity}</span>
               </div>
             );
           })}
-          <p className="mt-2 text-[10px] text-red-300/60">
-            All Cargo Hold contents have been lost.
-          </p>
+          <p className="mt-2 text-[10px] text-danger/60">All Cargo Hold contents have been lost.</p>
         </div>
 
         {/* Tow Recovery */}
-        <div className="mb-4 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
-          <p className="mb-1 text-[10px] font-medium text-cyan-300">Recovery Tow</p>
-          <p className="text-[10px] text-cyan-200/60">
+        <div className="mb-4 rounded-lg border border-secondary bg-secondary/20 p-3">
+          <p className="mb-1 text-[10px] font-medium text-secondary-foreground">Recovery Tow</p>
+          <p className="text-[10px] text-secondary-foreground/60">
             Your ship is being towed back to the previous Spaceport.
           </p>
-          <p className="mt-2 text-[10px] font-medium text-cyan-300">
+          <p className="mt-2 text-[10px] font-medium text-secondary-foreground">
             Previous Spaceport: {previousSpaceport}
           </p>
-          <p className="text-[10px] text-cyan-200/60">Your ship will be repaired upon arrival.</p>
+          <p className="text-[10px] text-secondary-foreground/60">
+            Your ship will be repaired upon arrival.
+          </p>
         </div>
 
         {/* Action Buttons */}
@@ -95,8 +98,8 @@ const UnsafePlanetModal = ({
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'bg-cyan-600 text-white hover:bg-cyan-700',
-              'active:bg-cyan-800'
+              'bg-primary text-primary-foreground hover:bg-primary-hover',
+              'active:bg-primary-active'
             )}
           >
             <RotateCcw className="mr-1 h-4 w-4" /> Return to Spaceport
@@ -105,7 +108,7 @@ const UnsafePlanetModal = ({
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'border border-cyan-700/50 bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900'
+              'border border-secondary/50 bg-secondary/30 text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active'
             )}
           >
             <Menu className="mr-1 h-4 w-4" /> Main Menu

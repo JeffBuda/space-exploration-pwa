@@ -41,14 +41,14 @@ const WelcomeBackModal = ({
         {/* Header with drag handle */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-cyan-100">Welcome Back, Captain</h2>
-            <p className="text-sm text-cyan-200/60">
+            <h2 className="text-xl font-bold text-foreground">Welcome Back, Captain</h2>
+            <p className="text-sm text-secondary-foreground/60">
               Away for <span className="font-medium">{formatDHMS(offlineDurationSeconds)}</span>
             </p>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="rounded-lg p-1 text-cyan-200/60 transition-colors hover:bg-cyan-900/30"
+            className="rounded-lg p-1 text-secondary-foreground/60 transition-colors hover:bg-secondary/30"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />
@@ -57,25 +57,27 @@ const WelcomeBackModal = ({
 
         {/* Energy regenerated (uncapped, 1.0 EN/min) */}
         <div className="mb-4 border-t border-[hsl(var(--border))] pt-4">
-          <p className="mb-1 text-xs text-cyan-300">Solar Energy Regenerated</p>
-          <p className="font-mono text-xl font-bold text-cyan-300">{energyRegenerated} EN</p>
-          <p className="text-[10px] text-cyan-200/60">
+          <p className="mb-1 text-xs text-secondary-foreground">Solar Energy Regenerated</p>
+          <p className="font-mono text-xl font-bold text-secondary-foreground">
+            {energyRegenerated} EN
+          </p>
+          <p className="text-[10px] text-secondary-foreground/60">
             1.0 EN/min passive solar panels (no offline time cap)
           </p>
         </div>
 
         {/* Tier 1 Summary */}
         <div className="mb-4">
-          <p className="mb-2 text-sm text-cyan-200/60">
+          <p className="mb-2 text-sm text-secondary-foreground/60">
             Tier 1 — Glanceable Summary (Default / Collapsed Drawer)
           </p>
           <div className="flex items-baseline gap-2">
-            <span className="text-cyan-300">Distance Traveled:</span>
-            <span className="font-medium text-cyan-100">LY traveled during offline</span>
+            <span className="text-secondary-foreground">Distance Traveled:</span>
+            <span className="font-medium text-foreground">LY traveled during offline</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-cyan-300">Passive Credits Earned:</span>
-            <span className="font-medium text-cyan-100">
+            <span className="text-secondary-foreground">Passive Credits Earned:</span>
+            <span className="font-medium text-foreground">
               {Math.floor(offlineDurationSeconds / 60)} Credits
             </span>
           </div>
@@ -83,12 +85,12 @@ const WelcomeBackModal = ({
 
         {/* Captain's Log */}
         {logEntries.length > 0 && (
-          <div className="mb-4 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
-            <p className="mb-1 text-xs font-medium text-cyan-300">Captain's Log</p>
-            <div className="space-y-1 text-xs text-cyan-200/60">
+          <div className="mb-4 rounded-lg border border-secondary bg-secondary/20 p-3">
+            <p className="mb-1 text-xs font-medium text-secondary-foreground">Captain's Log</p>
+            <div className="space-y-1 text-xs text-secondary-foreground/60">
               {logEntries.map((entry, idx) => (
                 <div key={idx} className="flex items-start gap-2">
-                  <span className="mr-2 text-sm text-cyan-400">{entry}</span>
+                  <span className="mr-2 text-sm text-primary">{entry}</span>
                 </div>
               ))}
             </div>
@@ -101,8 +103,8 @@ const WelcomeBackModal = ({
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'bg-cyan-600 text-white hover:bg-cyan-700',
-              'active:bg-cyan-800'
+              'bg-primary text-primary-foreground hover:bg-primary-hover',
+              'active:bg-primary-active'
             )}
           >
             <Trophy className="mr-1 h-4 w-4" /> Continue Mission
@@ -111,7 +113,7 @@ const WelcomeBackModal = ({
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'border border-cyan-700/50 bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900'
+              'border border-secondary/50 bg-secondary/30 text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active'
             )}
           >
             <Menu className="mr-1 h-4 w-4" /> Main Menu

@@ -14,27 +14,29 @@ const TopHudBar = ({ systemName, credits, energy, onSettingsClick }: TopHudBarPr
     <div className="fixed left-0 right-0 top-0 z-10 mx-auto max-w-[430px] border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-600/20">
-            <Rocket className="h-3 w-3 text-cyan-400" />
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20">
+            <Rocket className="h-3 w-3 text-primary" />
           </div>
-          <h2 className="text-sm font-bold text-cyan-100">{systemName}</h2>
+          <h2 className="text-sm font-bold text-foreground">{systemName}</h2>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500/20 text-[10px] text-yellow-400">
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rarity-legendary/20 text-[10px] text-rarity-legendary">
               C
             </span>
-            <span className="font-mono font-bold text-yellow-300">{formatCredits(credits)}</span>
+            <span className="font-mono font-bold text-rarity-legendary">
+              {formatCredits(credits)}
+            </span>
           </div>
           <div className="flex items-center gap-1">
-            <Zap className="h-4 w-4 text-cyan-400" />
-            <span className="font-mono font-bold text-cyan-300">
+            <Zap className="h-4 w-4 text-primary" />
+            <span className="font-mono font-bold text-secondary-foreground">
               {energy} / {MAX_ENERGY} EN
             </span>
           </div>
           <button
             onClick={onSettingsClick}
-            className="flex-shrink-0 rounded-lg p-1.5 text-cyan-200/60 transition-colors hover:bg-[hsl(var(--secondary))]"
+            className="flex-shrink-0 rounded-lg p-1.5 text-secondary-foreground/60 transition-colors hover:bg-[hsl(var(--secondary))]"
             aria-label="Settings / Menu"
           >
             <Settings className="h-5 w-5" />
@@ -42,7 +44,7 @@ const TopHudBar = ({ systemName, credits, energy, onSettingsClick }: TopHudBarPr
         </div>
       </div>
       <div className="mt-1 flex items-center justify-end">
-        <span className="font-mono text-[10px] text-cyan-200/60">
+        <span className="font-mono text-[10px] text-secondary-foreground/60">
           +{ENERGY_REGEN_PER_MINUTE.toFixed(1)} EN/min passive solar
         </span>
       </div>

@@ -40,19 +40,19 @@ const IOSInstallGate = ({ onDismiss, isVisible = true }: IOSInstallGateProps) =>
     >
       <div className="rounded-t-xl border-t border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
         <div className="flex items-start gap-3">
-          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-600/20">
-            <DownloadCloud className="h-6 w-6 text-cyan-400" />
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary/20">
+            <DownloadCloud className="h-6 w-6 text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-semibold text-cyan-100">Install Space Explorer</h3>
-            <p className="mt-1 text-xs text-cyan-200/60">
+            <h3 className="text-sm font-semibold text-foreground">Install Space Explorer</h3>
+            <p className="mt-1 text-xs text-secondary-foreground/60">
               Add to Home Screen to play offline and avoid Safari's 7-day data wipe. Your progress
               stays safe.
             </p>
           </div>
           <button
             onClick={onDismiss}
-            className="flex-shrink-0 rounded-lg p-1 text-cyan-200/60 transition-colors hover:bg-cyan-900/30"
+            className="flex-shrink-0 rounded-lg p-1 text-secondary-foreground/60 transition-colors hover:bg-secondary/30"
             aria-label="Dismiss"
           >
             <X className="h-5 w-5" />
@@ -63,9 +63,9 @@ const IOSInstallGate = ({ onDismiss, isVisible = true }: IOSInstallGateProps) =>
             disabled={!deferredPrompt}
             className={cn(
               'flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium',
-              'bg-cyan-600 text-white',
+              'bg-primary text-primary-foreground',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'active:bg-cyan-700'
+              'active:bg-primary-active'
             )}
           >
             <Smartphone className="h-4 w-4" />
@@ -75,8 +75,8 @@ const IOSInstallGate = ({ onDismiss, isVisible = true }: IOSInstallGateProps) =>
             onClick={onDismiss}
             className={cn(
               'rounded-lg px-4 py-2.5 text-sm font-medium',
-              'border border-cyan-700/50 bg-cyan-900/30 text-cyan-300',
-              'hover:bg-cyan-800/30 active:bg-cyan-900'
+              'border border-secondary/50 bg-secondary/30 text-secondary-foreground',
+              'hover:bg-secondary-hover/30 active:bg-secondary-active'
             )}
           >
             Later

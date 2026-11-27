@@ -11,12 +11,12 @@ export function EvasionGauge({ comboTier, className }: EvasionGaugeProps) {
   return (
     <div className={cn('mb-2', className)}>
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-[10px] text-cyan-200/60">Evasion Probability</span>
-        <span className="font-mono text-xs text-cyan-300">{gauge.toFixed(0)}%</span>
+        <span className="text-[10px] text-secondary-foreground/60">Evasion Probability</span>
+        <span className="font-mono text-xs text-secondary-foreground">{gauge.toFixed(0)}%</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-700">
+      <div className="bg-surface h-2 w-full overflow-hidden rounded-full">
         <div
-          className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-200"
+          className="h-full bg-gradient-to-r from-primary to-success transition-all duration-200"
           style={{ width: `${Math.max(0, Math.min(100, gauge))}%` }}
         />
       </div>

@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    /* ── Shadcn / base semantic colors ── */
     --background: 230 40% 6%;
     --foreground: 190 60% 90%;
     --card: 230 40% 8%;
@@ -25,104 +26,33 @@
     --ring: 190 90% 55%;
     --radius: 0.75rem;
 
-    /* ── Game-specific color variables ────────────────────────────── */
-    /* Cyan palette (primary color scheme) */
-    --cyan-50: 180 100% 98%;
-    --cyan-100: 180 100% 95%;
-    --cyan-200: 180 100% 90%;
-    --cyan-300: 180 100% 85%;
-    --cyan-400: 180 100% 70%;
-    --cyan-500: 180 100% 60%;
-    --cyan-600: 180 100% 50%;
-    --cyan-700: 180 100% 40%;
-    --cyan-800: 180 100% 30%;
-    --cyan-900: 180 100% 20%;
+    /* ── Game semantic state colors ── */
+    --color-primary-hover: 190 90% 45%;
+    --color-primary-active: 190 90% 35%;
+    --color-secondary-hover: 190 60% 20%;
+    --color-secondary-active: 190 60% 10%;
 
-    /* Slate palette (neutral/background support) */
-    --slate-50: 220 20% 98%;
-    --slate-100: 220 20% 95%;
-    --slate-200: 220 20% 90%;
-    --slate-300: 220 20% 85%;
-    --slate-400: 220 20% 70%;
-    --slate-500: 220 20% 65%;
-    --slate-600: 220 20% 60%;
-    --slate-700: 220 20% 50%;
-    --slate-800: 220 20% 40%;
-    --slate-900: 220 20% 30%;
+    /* ── Game status colors (semantic) ── */
+    --color-success: 140 70% 55%;
+    --color-success-bg: 140 60% 15%;
+    --color-success-border: 140 50% 30%;
 
-    /* Yellow palette (rarity: rare) */
-    --yellow-50: 45 100% 96%;
-    --yellow-100: 45 100% 92%;
-    --yellow-200: 45 100% 88%;
-    --yellow-300: 45 100% 80%;
-    --yellow-400: 45 100% 70%;
-    --yellow-500: 45 100% 60%;
-    --yellow-600: 45 100% 55%;
-    --yellow-700: 45 100% 45%;
-    --yellow-800: 45 100% 40%;
-    --yellow-900: 45 100% 30%;
+    --color-warning: 45 100% 65%;
+    --color-warning-bg: 45 60% 15%;
+    --color-warning-border: 45 50% 30%;
 
-    /* Amber palette (rarity: epic) */
-    --amber-50: 30 100% 98%;
-    --amber-100: 30 100% 94%;
-    --amber-200: 30 100% 90%;
-    --amber-300: 30 100% 85%;
-    --amber-400: 30 100% 75%;
-    --amber-500: 30 100% 70%;
-    --amber-600: 30 100% 60%;
-    --amber-700: 30 100% 50%;
-    --amber-800: 30 100% 40%;
-    --amber-900: 30 100% 30%;
+    --color-danger: 0 70% 55%;
+    --color-danger-bg: 0 60% 15%;
+    --color-danger-border: 0 50% 30%;
 
-    /* Purple palette (rarity: legendary) */
-    --purple-50: 270 100% 97%;
-    --purple-100: 270 100% 93%;
-    --purple-200: 270 100% 89%;
-    --purple-300: 270 100% 84%;
-    --purple-400: 270 100% 74%;
-    --purple-500: 270 100% 68%;
-    --purple-600: 270 100% 58%;
-    --purple-700: 270 100% 48%;
-    --purple-800: 270 100% 38%;
-    --purple-900: 270 100% 28%;
+    /* ── Rarity colors (game-specific, semantic) ── */
+    --color-rarity-common: 220 20% 75%;
+    --color-rarity-uncommon: 190 70% 70%;
+    --color-rarity-rare: 45 80% 65%;
+    --color-rarity-epic: 270 70% 65%;
+    --color-rarity-legendary: 45 100% 60%;
 
-    /* Red palette (destructive/unsafe) */
-    --red-50: 0 100% 98%;
-    --red-100: 0 100% 95%;
-    --red-200: 0 100% 90%;
-    --red-300: 0 100% 85%;
-    --red-400: 0 100% 75%;
-    --red-500: 0 100% 65%;
-    --red-600: 0 100% 60%;
-    --red-700: 0 100% 50%;
-    --red-800: 0 100% 40%;
-    --red-900: 0 100% 30%;
-
-    /* Green palette (safe bodies) */
-    --green-50: 140 100% 97%;
-    --green-100: 140 100% 93%;
-    --green-200: 140 100% 89%;
-    --green-300: 140 100% 84%;
-    --green-400: 140 100% 74%;
-    --green-500: 140 100% 68%;
-    --green-600: 140 100% 58%;
-    --green-700: 140 100% 48%;
-    --green-800: 140 100% 38%;
-    --green-900: 140 100% 28%;
-
-    /* Orange palette (accent highlight) */
-    --orange-50: 30 100% 98%;
-    --orange-100: 30 100% 94%;
-    --orange-200: 30 100% 90%;
-    --orange-300: 30 100% 85%;
-    --orange-400: 30 100% 75%;
-    --orange-500: 30 100% 70%;
-    --orange-600: 30 100% 60%;
-    --orange-700: 30 100% 50%;
-    --orange-800: 30 100% 40%;
-    --orange-900: 30 100% 30%;
-
-    /* ── Font variables ──────────────────────────────────────────── */
+    /* ── Fonts ── */
     --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }

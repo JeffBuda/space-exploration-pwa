@@ -100,17 +100,17 @@ function DebugConsoleView({
     <div className="fixed inset-0 z-[100] flex flex-col bg-black/90">
       {/* Header */}
       <div className="fixed left-0 right-0 top-0 z-[101] mx-auto flex max-w-[430px] items-center justify-between border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3">
-        <h2 className="flex items-center gap-2 text-lg font-bold text-cyan-100">
+        <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
           <Terminal className="h-5 w-5" /> Debug Console
         </h2>
         <div className="flex items-center gap-2">
-          <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+          <button className="rounded p-1 text-secondary-foreground/60 hover:bg-secondary/30">
             <Filter className="h-4 w-4" />
           </button>
-          <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+          <button className="rounded p-1 text-secondary-foreground/60 hover:bg-secondary/30">
             <Copy className="h-4 w-4" />
           </button>
-          <button className="rounded p-1 text-cyan-300/60 hover:bg-cyan-900/30">
+          <button className="rounded p-1 text-secondary-foreground/60 hover:bg-secondary/30">
             <Trash2 className="h-4 w-4" />
           </button>
         </div>
@@ -125,8 +125,8 @@ function DebugConsoleView({
             className={cn(
               'rounded-md px-3 py-1 text-xs font-medium',
               filter === f
-                ? 'bg-cyan-600 text-white'
-                : 'bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary/30 text-secondary-foreground hover:bg-secondary-hover/30'
             )}
           >
             {f}
@@ -141,28 +141,28 @@ function DebugConsoleView({
             <div
               key={log.id}
               className={cn(
-                'space-y-1 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3',
-                'transition-colors hover:border-cyan-500/30'
+                'space-y-1 rounded-lg border border-secondary bg-secondary/20 p-3',
+                'transition-colors hover:border-primary/30'
               )}
             >
-              <div className="flex items-center justify-between text-[10px] text-cyan-300/50">
+              <div className="flex items-center justify-between text-[10px] text-secondary-foreground/50">
                 <span>{log.timestamp}</span>
                 <span
                   className={cn(
                     'rounded px-1.5 py-0.5 text-[9px] font-medium',
-                    log.level === 'ENGINE' && 'bg-cyan-600/30 text-cyan-300',
-                    log.level === 'ECONOMY' && 'bg-amber-600/30 text-amber-300',
-                    log.level === 'NAVIGATION' && 'bg-purple-600/30 text-purple-300'
+                    log.level === 'ENGINE' && 'bg-primary/30 text-secondary-foreground',
+                    log.level === 'ECONOMY' && 'bg-warning/30 text-warning',
+                    log.level === 'NAVIGATION' && 'bg-rarity-epic/30 text-rarity-epic'
                   )}
                 >
                   {log.level}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-cyan-100">{log.action}</span>
-                <span className="text-cyan-300/60">{log.executionTimeMs}ms</span>
+                <span className="font-medium text-foreground">{log.action}</span>
+                <span className="text-secondary-foreground/60">{log.executionTimeMs}ms</span>
               </div>
-              <pre className="overflow-x-auto whitespace-pre-wrap rounded bg-black/30 p-2 text-[10px] text-cyan-200/60">
+              <pre className="overflow-x-auto whitespace-pre-wrap rounded bg-black/30 p-2 text-[10px] text-secondary-foreground/60">
                 {JSON.stringify(log.stateDiff, null, 2)}
               </pre>
             </div>
@@ -172,10 +172,10 @@ function DebugConsoleView({
 
       {/* Footer actions */}
       <div className="fixed bottom-0 left-0 right-0 z-[101] mx-auto flex max-w-[430px] gap-2 border-t border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30">
+        <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30">
           <Download className="h-4 w-4" /> Export Trace
         </button>
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-700/50 bg-red-900/30 py-2 text-sm font-medium text-red-400 hover:bg-red-800/30">
+        <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-danger-border bg-danger-bg/30 py-2 text-sm font-medium text-danger hover:bg-danger-bg/30">
           <Trash2 className="h-4 w-4" /> Clear Logs
         </button>
       </div>
@@ -240,38 +240,38 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
 
   const iOSGuide = (
     <div className="space-y-3 border-t pt-4">
-      <h3 className="text-sm font-medium text-cyan-300">iOS Install Guide</h3>
-      <p className="mb-2 text-xs text-cyan-200/60">
+      <h3 className="text-sm font-medium text-secondary-foreground">iOS Install Guide</h3>
+      <p className="mb-2 text-xs text-secondary-foreground/60">
         Safari's 7-day ITP storage wipe prevention. If running in mobile Safari and not standalone:
       </p>
-      <ol className="list-inside list-disc space-y-1 text-xs text-cyan-200/60">
+      <ol className="list-inside list-disc space-y-1 text-xs text-secondary-foreground/60">
         <li>Tap Share → scroll down → "Add to Home Screen"</li>
         <li>Confirm adding the app to your home screen</li>
         <li>Launch from Home Screen for standalone mode</li>
       </ol>
-      <p className="mt-2 text-[10px] text-cyan-200/60">
+      <p className="mt-2 text-[10px] text-secondary-foreground/60">
         This prevents Safari's 7-day storage wipe and preserves your progress.
       </p>
     </div>
   );
 
   const resetConfirm = (
-    <div className="space-y-3 rounded-xl border border-red-700/50 bg-red-900/30 p-4">
-      <p className="mb-2 text-sm font-medium text-amber-300">New Run / Reset</p>
-      <p className="text-[10px] text-cyan-200/60">
+    <div className="space-y-3 rounded-xl border border-danger-border bg-danger-bg/30 p-4">
+      <p className="mb-2 text-sm font-medium text-warning">New Run / Reset</p>
+      <p className="text-[10px] text-secondary-foreground/60">
         Confirming will wipe Credits, Cargo Hold, and the full 118-element Discovery Codex. The run
         resets to Sol with 100 CR / 100 EN.
       </p>
       <div className="mt-2 flex gap-2">
         <button
           onClick={handleConfirmReset}
-          className="flex-1 rounded-lg bg-red-600 py-2 text-sm font-medium text-white active:bg-red-700"
+          className="flex-1 rounded-lg bg-danger py-2 text-sm font-medium text-primary-foreground active:bg-danger"
         >
           <AlertTriangle className="mr-1 h-4 w-4" /> Confirm Reset
         </button>
         <button
           onClick={() => setShowResetConfirm(false)}
-          className="flex-1 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 active:bg-cyan-800/30"
+          className="flex-1 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground active:bg-primary-active/30"
         >
           Cancel
         </button>
@@ -280,26 +280,26 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
   );
 
   const runStatus = (
-    <div className="space-y-1 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-3">
-      <p className="text-[10px] font-medium text-cyan-300">Run State</p>
-      <div className="space-y-1 text-[10px] text-cyan-200">
+    <div className="space-y-1 rounded-lg border border-secondary bg-secondary/20 p-3">
+      <p className="text-[10px] font-medium text-secondary-foreground">Run State</p>
+      <div className="space-y-1 text-[10px] text-secondary-foreground">
         <div className="flex justify-between">
-          <span className="text-slate-400">System</span>
-          <span className="font-mono text-cyan-100">{runState.systemName}</span>
+          <span className="text-muted-foreground">System</span>
+          <span className="font-mono text-foreground">{runState.systemName}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-slate-400">Credits</span>
-          <span className="font-mono text-yellow-300">{formatCredits(runState.credits)}</span>
+          <span className="text-muted-foreground">Credits</span>
+          <span className="font-mono text-rarity-legendary">{formatCredits(runState.credits)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-slate-400">Energy</span>
-          <span className="font-mono text-cyan-300">
+          <span className="text-muted-foreground">Energy</span>
+          <span className="font-mono text-secondary-foreground">
             {runState.energy} / {INITIAL_ENERGY} EN
           </span>
         </div>
         <div className="flex justify-between">
-          <span className="text-slate-400">Discovery Codex</span>
-          <span className="font-mono text-cyan-300">
+          <span className="text-muted-foreground">Discovery Codex</span>
+          <span className="font-mono text-secondary-foreground">
             {runState.discoveredElements.size} / {ELEMENTS.length}
           </span>
         </div>
@@ -313,13 +313,13 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
         {/* Settings Menu */}
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="max-h-[80vh] w-full max-w-md space-y-6 overflow-y-auto rounded-2xl bg-[hsl(var(--card))] p-6 shadow-2xl shadow-black/30">
-            <h2 className="text-center text-xl font-bold text-cyan-100">Settings</h2>
+            <h2 className="text-center text-xl font-bold text-foreground">Settings</h2>
 
             {/* iOS Install Guide */}
             <div className="space-y-3 border-t pt-4">
               <button
                 onClick={handleInstallGuide}
-                className="flex items-center justify-between py-2 text-sm font-medium text-cyan-300 hover:text-cyan-100"
+                className="flex items-center justify-between py-2 text-sm font-medium text-secondary-foreground hover:text-foreground"
               >
                 <span>iOS Install Guide</span>
                 <Smartphone className="ml-2 h-4 w-4" />
@@ -329,20 +329,20 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
 
             {/* Save Backup */}
             <div className="space-y-2 border-t pt-4">
-              <h3 className="text-sm font-medium text-cyan-300">Save Backup</h3>
-              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900">
+              <h3 className="text-sm font-medium text-secondary-foreground">Save Backup</h3>
+              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active">
                 <Download className="h-4 w-4" /> Export Save (JSON)
               </button>
-              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900">
+              <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active">
                 <Upload className="h-4 w-4" /> Import Save
               </button>
             </div>
 
             {/* Diagnostics */}
             <div className="space-y-2 border-t pt-4">
-              <h3 className="text-sm font-medium text-cyan-300">Diagnostics</h3>
+              <h3 className="text-sm font-medium text-secondary-foreground">Diagnostics</h3>
               <button
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 py-2 text-sm font-medium text-white active:bg-cyan-700"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2 text-sm font-medium text-primary-foreground active:bg-primary-active"
                 onClick={handleForceUpdate}
               >
                 <Wrench className="h-4 w-4" /> Force UI Update (Clear Cache & Preserve Save)
@@ -351,9 +351,9 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
 
             {/* New Run / Reset */}
             <div className="space-y-2 border-t pt-4">
-              <h3 className="text-sm font-medium text-amber-300">New Run / Reset</h3>
+              <h3 className="text-sm font-medium text-warning">New Run / Reset</h3>
               <button
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-700/50 bg-amber-900/30 py-2 text-sm font-medium text-amber-300 hover:bg-amber-800/30 active:bg-amber-900"
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-warning/50 bg-warning-bg/30 py-2 text-sm font-medium text-warning hover:bg-warning-bg/30 active:bg-warning-bg"
                 onClick={handleNewRun}
               >
                 <Rocket className="h-4 w-4" /> New Run / Reset
@@ -368,12 +368,14 @@ const SystemMenuAndDiagnostics = ({ mode }: SystemMenuAndDiagnosticsProps) => {
             <div className="border-t pt-4 text-center">
               <button
                 type="button"
-                className="m-0 border-none bg-none p-0 text-left align-baseline text-xs font-normal text-cyan-300/60"
+                className="m-0 border-none bg-none p-0 text-left align-baseline text-xs font-normal text-secondary-foreground/60"
                 onClick={handleVersionTap}
               >
-                v0.1.0-alpha <span className="text-cyan-400/50">(tap 5× for Debug)</span>
+                v0.1.0-alpha <span className="text-primary/50">(tap 5× for Debug)</span>
               </button>
-              <p className="mt-1 text-[10px] text-cyan-300/40">Version taps: {versionTaps} / 5</p>
+              <p className="mt-1 text-[10px] text-secondary-foreground/40">
+                Version taps: {versionTaps} / 5
+              </p>
             </div>
           </div>
         </div>
