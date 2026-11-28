@@ -12,7 +12,7 @@ export const App = () => {
   const handleRecharge = () => rechargeEnergy(100);
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#0d1117]">
+    <div className="relative h-full w-full overflow-hidden bg-background">
       <TopHudBar systemName="Sol" credits={credits} energy={energy} />
       <StarMapBackground />
       <CommandDrawer

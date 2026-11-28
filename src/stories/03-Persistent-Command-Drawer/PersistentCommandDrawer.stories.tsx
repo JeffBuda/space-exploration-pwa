@@ -317,25 +317,28 @@ function RouteView({
 
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-sm font-semibold text-cyan-300">Route & Transit</h2>
+      <h2 className="text-sm font-semibold text-secondary-foreground">Route & Transit</h2>
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-[10px] font-medium text-slate-400">Active Route</span>
+        <span className="text-[10px] font-medium text-muted-foreground">Active Route</span>
         <span
-          className={cn('font-mono text-[10px]', isRouteValid ? 'text-cyan-400' : 'text-slate-500')}
+          className={cn(
+            'font-mono text-[10px]',
+            isRouteValid ? 'text-primary' : 'text-muted-foreground'
+          )}
         >
           {route.length > 0 ? route.join(' → ') : '—'}
         </span>
       </div>
 
       {inTransit ? (
-        <div className="space-y-2 rounded-lg border border-cyan-500/30 bg-cyan-900/20 p-3">
+        <div className="space-y-2 rounded-lg border border-primary/30 bg-secondary/20 p-3">
           <div className="flex items-center justify-between text-[10px]">
-            <span className="text-cyan-300">Hop Remaining</span>
-            <span className="font-mono text-cyan-100">{formatDuration(remainingSeconds)}</span>
+            <span className="text-secondary-foreground">Hop Remaining</span>
+            <span className="font-mono text-foreground">{formatDuration(remainingSeconds)}</span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
+          <div className="bg-surface h-1.5 w-full overflow-hidden rounded-full">
             <div
-              className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-1000"
+              className="h-full bg-gradient-to-r from-primary to-success transition-all duration-1000"
               style={{
                 width: `${Math.max(0, ((totalTime - remainingSeconds) / totalTime) * 100)}%`,
               }}
@@ -343,21 +346,21 @@ function RouteView({
           </div>
           <div className="flex items-center justify-between gap-2">
             <button
-              className="flex-1 rounded-lg border border-red-500/50 py-2 text-sm font-medium text-red-400 hover:bg-red-900/20 active:bg-red-800/30"
+              className="flex-1 rounded-lg border border-danger/50 py-2 text-sm font-medium text-danger hover:bg-danger-bg/20 active:bg-danger/30"
               onClick={handleCancelHop}
               disabled={remainingSeconds <= 0}
             >
               <Cross className="mr-1 h-4 w-4" /> Cancel Hop
               {droppedAt && (
-                <span className="ml-1 text-[10px] text-red-400">Dropped at {droppedAt}</span>
+                <span className="ml-1 text-[10px] text-danger">Dropped at {droppedAt}</span>
               )}
             </button>
             <button
-              className="flex-1 rounded-lg bg-gradient-to-br from-cyan-600 to-cyan-800 py-2 text-sm font-medium text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
+              className="flex-1 rounded-lg bg-gradient-to-br from-primary to-primary-active py-2 text-sm font-medium text-primary-foreground shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
               onClick={handleTimeSkip}
             >
               <Zap className="mr-1 h-4 w-4" /> Time-Skip{' '}
-              <span className="ml-2 font-mono text-xs text-green-300">
+              <span className="ml-2 font-mono text-xs text-success">
                 {comboTier <= 0 ? '1x / -1s' : `${comboTier}x / -${secondsPerTap}s`}
               </span>
             </button>
@@ -367,35 +370,37 @@ function RouteView({
         <>
           {route.length > 1 && (
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-slate-700/50 bg-slate-900/30 p-2">
-                <p className="mb-1 text-[10px] text-slate-400">Energy Cost</p>
+              <div className="rounded-lg border border-border/50 bg-background/30 p-2">
+                <p className="mb-1 text-[10px] text-muted-foreground">Energy Cost</p>
                 <span
                   className={cn(
                     'font-mono text-xs',
-                    insufficientEnergy ? 'text-red-400' : 'text-cyan-300'
+                    insufficientEnergy ? 'text-danger' : 'text-secondary-foreground'
                   )}
                 >
                   {totalEnergy}
                 </span>
               </div>
-              <div className="rounded-lg border border-slate-700/50 bg-slate-900/30 p-2">
-                <p className="mb-1 text-[10px] text-slate-400">Travel Time</p>
-                <span className="font-mono text-xs text-cyan-300">{formatDuration(totalTime)}</span>
+              <div className="rounded-lg border border-border/50 bg-background/30 p-2">
+                <p className="mb-1 text-[10px] text-muted-foreground">Travel Time</p>
+                <span className="font-mono text-xs text-secondary-foreground">
+                  {formatDuration(totalTime)}
+                </span>
               </div>
             </div>
           )}
-          <div className="space-y-2 border-t border-slate-700/50 pt-3">
+          <div className="space-y-2 border-t border-border/50 pt-3">
             <div className="mb-3 grid grid-cols-2 gap-2">
               <div>
-                <p className="text-[10px] text-slate-400">Energy</p>
-                <span className="font-mono font-bold text-cyan-300">{energy}</span>
+                <p className="text-[10px] text-muted-foreground">Energy</p>
+                <span className="font-mono font-bold text-secondary-foreground">{energy}</span>
               </div>
               <div>
-                <p className="text-[10px] text-slate-400">Needed</p>
+                <p className="text-[10px] text-muted-foreground">Needed</p>
                 <span
                   className={cn(
                     'font-mono text-xs',
-                    totalEnergy > energy ? 'text-red-400' : 'text-cyan-300'
+                    totalEnergy > energy ? 'text-danger' : 'text-secondary-foreground'
                   )}
                 >
                   {totalEnergy}
@@ -403,32 +408,32 @@ function RouteView({
               </div>
             </div>
             {totalEnergy > energy && (
-              <p className="text-[10px] text-red-400">Insufficient Energy — Engage Warp disabled</p>
+              <p className="text-[10px] text-danger">Insufficient Energy — Engage Warp disabled</p>
             )}
             <button
               className={cn(
-                'w-full rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-cyan-600/30',
+                'w-full rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-primary/30',
                 insufficientEnergy
-                  ? 'cursor-not-allowed border border-cyan-500/50 bg-cyan-900/30 text-cyan-300 opacity-50'
-                  : 'bg-cyan-600 text-white active:bg-cyan-700'
+                  ? 'cursor-not-allowed border border-primary/50 bg-secondary/30 text-secondary-foreground opacity-50'
+                  : 'bg-primary text-primary-foreground active:bg-primary-active'
               )}
               disabled={insufficientEnergy}
               onClick={handleEngageWarp}
             >
               <Command className="mr-1 h-4 w-4" /> Engage Warp
               {insufficientEnergy && (
-                <span className="ml-1 text-[10px] text-red-400">Insufficient Energy</span>
+                <span className="ml-1 text-[10px] text-danger">Insufficient Energy</span>
               )}
             </button>
             <button
-              className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+              className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
               onClick={() => setRoute([])}
             >
               <Cross className="mr-1 h-4 w-4" /> Clear Route
             </button>
             {route.length > 1 && (
               <button
-                className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+                className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
                 onClick={() => setRoute([])}
               >
                 <Cross className="mr-1 h-4 w-4" /> Cancel Hop
@@ -490,18 +495,18 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
 
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-sm font-semibold text-cyan-300">System & Bodies</h2>
+      <h2 className="text-sm font-semibold text-secondary-foreground">System & Bodies</h2>
       <div className="mb-4 grid grid-cols-2 gap-3">
         <div>
-          <p className="text-[10px] text-slate-400">System</p>
-          <p className="font-mono text-cyan-100">{system.name}</p>
+          <p className="text-[10px] text-muted-foreground">System</p>
+          <p className="font-mono text-foreground">{system.name}</p>
         </div>
         <div>
-          <p className="text-[10px] text-slate-400">Spaceport</p>
+          <p className="text-[10px] text-muted-foreground">Spaceport</p>
           <p
             className={cn(
               'font-mono text-xs',
-              system.hasSpaceport ? 'text-green-400' : 'text-red-400/50'
+              system.hasSpaceport ? 'text-success' : 'text-danger/50'
             )}
           >
             {system.hasSpaceport ? 'Yes' : 'No'}
@@ -513,7 +518,7 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
         {system.bodies.map((body: CelestialBody) => {
           const isScanned = scannedIds.has(body.id) || body.scanned;
           const isUnsafe = body.safety === 'unsafe';
-          const safetyColor = isUnsafe ? 'text-red-400' : 'text-green-400';
+          const safetyColor = isUnsafe ? 'text-danger' : 'text-success';
           const safetyLabel = isUnsafe ? 'Unsafe' : 'Safe';
 
           return (
@@ -521,7 +526,7 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
               key={body.id}
               className={cn(
                 'space-y-1 rounded-lg border p-3',
-                isUnsafe ? 'border-red-700/30' : 'border-green-700/30'
+                isUnsafe ? 'border-danger' : 'border-success-border'
               )}
             >
               <div className="flex items-center justify-between">
@@ -536,12 +541,12 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                           : 'bg-blue-400'
                     )}
                   />
-                  <span className="font-medium text-cyan-100">{body.name}</span>
+                  <span className="font-medium text-foreground">{body.name}</span>
                 </div>
                 <span className={cn('text-[10px] font-medium', safetyColor)}>{safetyLabel}</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[10px] text-cyan-300/60">
+              <div className="grid grid-cols-2 gap-2 text-[10px] text-secondary-foreground/60">
                 <div>
                   <p className="mb-0.5">Hints</p>
                   <p>{body.preScanHints.slice(0, 3).join(', ')}</p>
@@ -549,12 +554,14 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                 <div>
                   <p className="mb-0.5">Scan</p>
                   {isScanned ? (
-                    <span className="font-mono text-green-300">Scanned</span>
+                    <span className="font-mono text-success">Scanned</span>
                   ) : scanningId === body.id ? (
-                    <span className="font-mono text-cyan-300">{formatDuration(scanRemaining)}</span>
+                    <span className="font-mono text-secondary-foreground">
+                      {formatDuration(scanRemaining)}
+                    </span>
                   ) : (
                     <button
-                      className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-[10px] font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+                      className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-[10px] font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
                       onClick={() => handleScanBody(body)}
                     >
                       Scan Body
@@ -563,11 +570,11 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                   {scanningId === body.id && (
                     <div className="mt-1 flex gap-2">
                       <button
-                        className="flex-1 rounded-lg bg-gradient-to-br from-cyan-600 to-cyan-800 py-1.5 text-[10px] font-medium text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
+                        className="flex-1 rounded-lg bg-gradient-to-br from-primary to-primary-active py-1.5 text-[10px] font-medium text-primary-foreground shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
                         onClick={handleScanSkip}
                       >
                         <Timer className="mr-1 h-3 w-3" /> Time-Skip{' '}
-                        <span className="ml-1 font-mono text-[10px] text-green-300">
+                        <span className="ml-1 font-mono text-[10px] text-success">
                           {scanCombo <= 0 ? '1x / -1s' : `${scanCombo}x / -${scanSecondsPerTap}s`}
                         </span>
                       </button>
@@ -577,8 +584,8 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
               </div>
 
               {isScanned && (
-                <div className="mt-2 rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-2">
-                  <p className="text-[10px] text-cyan-300/60">Minable Elements</p>
+                <div className="mt-2 rounded-lg border border-secondary bg-secondary/20 p-2">
+                  <p className="text-[10px] text-secondary-foreground/60">Minable Elements</p>
                   {body.minableElements.length > 0 ? (
                     <div className="flex flex-wrap gap-2 text-[10px]">
                       {body.minableElements.map((el) => {
@@ -612,13 +619,13 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                       })}
                     </div>
                   ) : (
-                    <p className="text-[10px] text-slate-500/60">None</p>
+                    <p className="text-[10px] text-muted-foreground/60">None</p>
                   )}
                 </div>
               )}
 
               {!body.scanned && !isScanned && !isUnsafe ? (
-                <div className="mt-2 text-[10px] text-slate-500/60">
+                <div className="mt-2 text-[10px] text-muted-foreground/60">
                   Scan body to reveal exact minable elements and cycle durations.
                 </div>
               ) : null}
@@ -628,8 +635,8 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                   className={cn(
                     'w-full rounded py-2 text-xs font-medium',
                     isUnsafe
-                      ? 'cursor-not-allowed border border-red-700/50 bg-red-900/30 text-red-400 opacity-70 hover:bg-red-800/30'
-                      : 'bg-cyan-600 text-white active:bg-cyan-700'
+                      ? 'cursor-not-allowed border border-danger-border bg-danger-bg/30 text-danger opacity-70 hover:bg-danger-bg/30'
+                      : 'bg-primary text-primary-foreground active:bg-primary-active'
                   )}
                   disabled={isUnsafe || body.type === 'star'}
                   onClick={() => handleLand(body)}
@@ -641,7 +648,7 @@ function SystemsView({ bodiesScanned = false }: { bodiesScanned?: boolean }) {
                       : 'Land'}
                 </button>
                 {isUnsafe && (
-                  <p className="mt-1 text-[10px] text-red-400/70">
+                  <p className="mt-1 text-[10px] text-danger/70">
                     Soft-failure recovery: ship destroyed, cargo wiped, towed back to previous
                     Spaceport (no Game Over reset).
                   </p>
@@ -731,11 +738,11 @@ function CargoView({
 
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-sm font-semibold text-cyan-300">Cargo Hold (Unlimited)</h2>
+      <h2 className="text-sm font-semibold text-secondary-foreground">Cargo Hold (Unlimited)</h2>
 
       <div className="max-h-[40vh] space-y-3 overflow-y-auto">
         {cargo.length === 0 && (
-          <p className="py-4 text-center text-[10px] text-slate-500">Empty hold</p>
+          <p className="py-4 text-center text-[10px] text-muted-foreground">Empty hold</p>
         )}
         {cargo.map((slot) => {
           const element = ELEMENTS.find((e) => e.symbol === slot.symbol);
@@ -745,7 +752,7 @@ function CargoView({
               key={element.atomicNumber}
               className={cn(
                 'flex items-center justify-between rounded-lg border p-3',
-                'border-slate-600/50 bg-slate-900/20',
+                'border-border/50 bg-background/20',
                 `border-${element.rarity}-700/30 ${RARITY_BG[element.rarity]}`
               )}
             >
@@ -756,13 +763,13 @@ function CargoView({
                   </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-cyan-100">{element.name}</p>
-                  <p className="text-xs text-slate-500/60">{slot.quantity}</p>
+                  <p className="text-sm font-medium text-foreground">{element.name}</p>
+                  <p className="text-xs text-muted-foreground/60">{slot.quantity}</p>
                 </div>
-                <span className="font-mono text-xs text-cyan-300">{slot.quantity}</span>
+                <span className="font-mono text-xs text-secondary-foreground">{slot.quantity}</span>
               </div>
-              <div className="mt-2 text-[10px] text-cyan-200/60">
-                <p className="text-[10px] text-cyan-200">
+              <div className="mt-2 text-[10px] text-secondary-foreground/60">
+                <p className="text-[10px] text-secondary-foreground">
                   Value: {formatCredits(element.baselineValue * slot.quantity)}
                 </p>
               </div>
@@ -771,8 +778,8 @@ function CargoView({
         })}
       </div>
 
-      <div className="mt-3 space-y-3 rounded-lg border border-cyan-700/30 bg-cyan-900/10 p-3">
-        <p className="mb-2 text-[10px] font-medium text-cyan-300">Mine Element</p>
+      <div className="mt-3 space-y-3 rounded-lg border border-secondary bg-secondary/10 p-3">
+        <p className="mb-2 text-[10px] font-medium text-secondary-foreground">Mine Element</p>
         <div className="max-h-[180px] space-y-1 overflow-y-auto">
           {ELEMENTS.slice(0, 20).map((element) => {
             const rc = RARITY_COLORS[element.rarity];
@@ -787,30 +794,32 @@ function CargoView({
                 }
                 className={cn(
                   'flex flex-col items-center gap-1 rounded border px-2 py-1 text-[10px]',
-                  `border-${element.rarity}-700/30 bg-slate-900/20`,
-                  isActive ? 'border-cyan-500/80 bg-cyan-900/40 text-cyan-100' : 'text-slate-300'
+                  `border-${element.rarity}-700/30 bg-background/20`,
+                  isActive ? 'border-primary bg-secondary/40 text-foreground' : 'text-rarity-common'
                 )}
               >
                 <span className={cn('font-mono font-bold', rc)}>{element.symbol}</span>
-                <span className="text-[10px] text-cyan-300/60">{element.extractionDuration}s</span>
+                <span className="text-[10px] text-secondary-foreground/60">
+                  {element.extractionDuration}s
+                </span>
               </button>
             );
           })}
         </div>
 
         {miningElement ? (
-          <div className="space-y-2 border-t border-cyan-700/30 pt-2">
+          <div className="space-y-2 border-t border-secondary pt-2">
             <div className="flex items-center justify-between text-[10px]">
               <span className={cn('font-medium', RARITY_COLORS[miningElement.rarity])}>
                 {miningElement.name} ({miningElement.symbol})
               </span>
-              <span className="font-mono text-cyan-300">
+              <span className="font-mono text-secondary-foreground">
                 +1 / {miningElement.extractionDuration}s · {unitsMinedThisSession} units mined
               </span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
+            <div className="bg-surface h-1.5 w-full overflow-hidden rounded-full">
               <div
-                className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-1000"
+                className="h-full bg-gradient-to-r from-primary to-success transition-all duration-1000"
                 style={{
                   width: `${Math.max(
                     0,
@@ -822,17 +831,17 @@ function CargoView({
               />
             </div>
             <button
-              className="w-full rounded-lg bg-gradient-to-br from-cyan-600 to-cyan-800 py-1.5 text-[10px] font-medium text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
+              className="w-full rounded-lg bg-gradient-to-br from-primary to-primary-active py-1.5 text-[10px] font-medium text-primary-foreground shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-transform active:scale-95"
               onClick={handleMineSkip}
             >
               <Zap className="mr-1 h-3 w-3" /> Time-Skip{' '}
-              <span className="ml-1 font-mono text-[10px] text-green-300">
+              <span className="ml-1 font-mono text-[10px] text-success">
                 {mineCombo <= 0 ? '1x / -1s' : `${mineCombo}x / -${mineSecondsPerTap}s`}
               </span>
             </button>
           </div>
         ) : (
-          <p className="mt-2 text-center text-[10px] text-slate-500/60">
+          <p className="mt-2 text-center text-[10px] text-muted-foreground/60">
             Select an element to begin continuous background idle mining.
           </p>
         )}
@@ -845,35 +854,37 @@ function CargoView({
 function MarketView({ cargoHold }: { cargoHold: { symbol: string; quantity: number }[] }) {
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-sm font-semibold text-cyan-300">Spaceport Market</h2>
-      <p className="mb-3 text-[10px] text-cyan-300">
+      <h2 className="text-sm font-semibold text-secondary-foreground">Spaceport Market</h2>
+      <p className="mb-3 text-[10px] text-secondary-foreground">
         Static seeded Bid/Ask prices for Periodic Table elements. Precalculated at world creation —
         never fluctuate dynamically.
       </p>
       <div className="mb-4 grid grid-cols-2 gap-3">
         {MARKET_ITEMS.map((el) => {
           const element = ELEMENTS.find((e) => e.symbol === el.symbol);
-          const rc = element ? RARITY_COLORS[element.rarity] : 'text-slate-300';
+          const rc = element ? RARITY_COLORS[element.rarity] : 'text-rarity-common';
           return (
             <div
               key={el.symbol}
-              className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-600 bg-slate-900 p-3 hover:border-cyan-500/30"
+              className="flex cursor-pointer items-center justify-between rounded-xl border border-border bg-background p-3 hover:border-primary/30"
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-900/30">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/30">
                   <span className={cn('font-mono font-bold', rc)}>{el.symbol}</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-cyan-100">{el.name}</p>
-                  <p className="text-xs text-slate-400/60">t</p>
+                  <p className="text-sm font-medium text-foreground">{el.name}</p>
+                  <p className="text-xs text-muted-foreground/60">t</p>
                 </div>
                 <div className="flex flex-col items-end">
-                  <p className="text-sm font-medium text-cyan-200">{formatCredits(el.bid)}</p>
-                  <p className="text-[10px] text-slate-400/60">bid</p>
+                  <p className="text-sm font-medium text-secondary-foreground">
+                    {formatCredits(el.bid)}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/60">bid</p>
                 </div>
                 <div className="flex flex-col items-end">
-                  <p className="text-sm font-medium text-amber-400">{formatCredits(el.ask)}</p>
-                  <p className="text-[10px] text-slate-400/60">ask</p>
+                  <p className="text-sm font-medium text-warning">{formatCredits(el.ask)}</p>
+                  <p className="text-[10px] text-muted-foreground/60">ask</p>
                 </div>
               </div>
             </div>
@@ -882,13 +893,13 @@ function MarketView({ cargoHold }: { cargoHold: { symbol: string; quantity: numb
       </div>
       <div className="space-y-3">
         <button
-          className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+          className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
           onClick={() => {}}
         >
           Buy Selected
         </button>
         <button
-          className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+          className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
           onClick={() => {}}
         >
           Sell Selected
@@ -944,59 +955,63 @@ function CodexView({
 
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-sm font-semibold text-cyan-300">Discovery Codex</h2>
+      <h2 className="text-sm font-semibold text-secondary-foreground">Discovery Codex</h2>
 
-      <div className="grid grid-cols-2 gap-2 text-[10px] text-cyan-300">
+      <div className="grid grid-cols-2 gap-2 text-[10px] text-secondary-foreground">
         <div>
           <p className="mb-1 text-[10px] font-medium">Discovered</p>
-          <p className="font-mono text-cyan-100">{discovered.size}</p>
-          <p className="text-[10px] text-slate-500/60">/ 118</p>
+          <p className="font-mono text-foreground">{discovered.size}</p>
+          <p className="text-[10px] text-muted-foreground/60">/ 118</p>
         </div>
         <div>
           <p className="mb-1 text-[10px] font-medium">Completed</p>
-          <p className={cn('text-cyan-400', completed ? '' : 'text-slate-500/60')}>
+          <p className={cn('text-primary', completed ? '' : 'text-muted-foreground/60')}>
             {completed ? 'YES' : 'NO'}
           </p>
         </div>
       </div>
 
       {completed && !victory && (
-        <div className="mb-3 rounded-lg border border-yellow-700/30 bg-yellow-900/10 p-3">
-          <p className="text-[10px] font-medium text-yellow-400">ENDLESS PLAY MODE UNLOCKED</p>
+        <div className="mb-3 rounded-lg border border-rarity-legendary bg-rarity-legendary/10 p-3">
+          <p className="text-[10px] font-medium text-rarity-legendary">
+            ENDLESS PLAY MODE UNLOCKED
+          </p>
         </div>
       )}
 
       {/* Prestige counters */}
       {prestige && (
         <div className="mb-3 mt-1 grid grid-cols-3 gap-2">
-          <div className="rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-2">
-            <p className="text-[10px] font-medium text-cyan-300">Systems Discovered</p>
-            <p className="font-mono text-lg text-cyan-100">{prestige.systemsDiscovered}</p>
+          <div className="rounded-lg border border-secondary bg-secondary/20 p-2">
+            <p className="text-[10px] font-medium text-secondary-foreground">Systems Discovered</p>
+            <p className="font-mono text-lg text-foreground">{prestige.systemsDiscovered}</p>
           </div>
-          <div className="rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-2">
-            <p className="text-[10px] font-medium text-cyan-300">Planets Discovered</p>
-            <p className="font-mono text-lg text-cyan-100">{prestige.planetsDiscovered}</p>
+          <div className="rounded-lg border border-secondary bg-secondary/20 p-2">
+            <p className="text-[10px] font-medium text-secondary-foreground">Planets Discovered</p>
+            <p className="font-mono text-lg text-foreground">{prestige.planetsDiscovered}</p>
           </div>
-          <div className="rounded-lg border border-cyan-700/30 bg-cyan-900/20 p-2">
-            <p className="text-[10px] font-medium text-cyan-300">Total Resources Mined</p>
-            <p className="font-mono text-lg text-cyan-100">{prestige.totalMined}</p>
+          <div className="rounded-lg border border-secondary bg-secondary/20 p-2">
+            <p className="text-[10px] font-medium text-secondary-foreground">
+              Total Resources Mined
+            </p>
+            <p className="font-mono text-lg text-foreground">{prestige.totalMined}</p>
           </div>
         </div>
       )}
 
       {/* Storybook demo presets — drive the interactive grid states */}
-      <div className="space-y-1 border-t border-slate-700/50 pt-3">
-        <p className="mb-1 text-[10px] font-medium text-slate-400">Demo presets</p>
+      <div className="space-y-1 border-t border-border/50 pt-3">
+        <p className="mb-1 text-[10px] font-medium text-muted-foreground">Demo presets</p>
         <div className="flex gap-2">
           <button
             onClick={() => handleDiscoveryDemo('mid')}
-            className="flex-1 rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-1.5 text-[10px] font-medium text-cyan-300 hover:bg-cyan-800/30"
+            className="flex-1 rounded-lg border border-secondary/50 bg-secondary/30 py-1.5 text-[10px] font-medium text-secondary-foreground hover:bg-secondary-hover/30"
           >
             Mid-run (14 / 118)
           </button>
           <button
             onClick={() => handleDiscoveryDemo('near')}
-            className="flex-1 rounded-lg border border-amber-700/50 bg-amber-900/30 py-1.5 text-[10px] font-medium text-amber-300 hover:bg-amber-800/30"
+            className="flex-1 rounded-lg border border-warning/50 bg-warning-bg/30 py-1.5 text-[10px] font-medium text-warning hover:bg-warning-bg/30"
           >
             Near-complete (117 / 118)
           </button>
@@ -1004,7 +1019,7 @@ function CodexView({
       </div>
 
       <div className="mt-3">
-        <p className="mb-2 text-[10px] font-medium text-cyan-300/60">Discovery Grid</p>
+        <p className="mb-2 text-[10px] font-medium text-secondary-foreground/60">Discovery Grid</p>
         <div className="grid max-h-[300px] grid-cols-4 gap-1 overflow-y-auto">
           {ELEMENTS.map((element) => {
             const isDiscovered = discovered.has(element.atomicNumber);
@@ -1016,9 +1031,9 @@ function CodexView({
                 className={cn(
                   'flex items-center justify-center rounded-lg border p-1 text-[10px]',
                   isDiscovered
-                    ? 'border-cyan-500/50 bg-cyan-600/20'
-                    : 'border-slate-700/50 bg-slate-900/30',
-                  isDiscovered ? rc : 'text-slate-400'
+                    ? 'border-primary/50 bg-primary/20'
+                    : 'border-border/50 bg-background/30',
+                  isDiscovered ? rc : 'text-muted-foreground'
                 )}
               >
                 <span className={cn('font-mono font-bold', rc)}>{element.symbol}</span>
@@ -1031,17 +1046,19 @@ function CodexView({
       {victory && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md space-y-3 rounded-2xl bg-[hsl(var(--card))] p-6 shadow-2xl shadow-black/30">
-            <h2 className="text-xl font-bold text-green-400">
+            <h2 className="text-xl font-bold text-success">
               <Target className="mr-2 h-5 w-5" /> Codex Complete
             </h2>
-            <p className="text-center text-2xl font-bold text-green-400">
+            <p className="text-center text-2xl font-bold text-success">
               All 118 Elements Discovered!
             </p>
-            <p className="text-center text-[10px] text-cyan-300/60">Endless Play Mode Unlocked</p>
+            <p className="text-center text-[10px] text-secondary-foreground/60">
+              Endless Play Mode Unlocked
+            </p>
             <div className="mt-4 flex gap-2">
               <button
                 onClick={() => setVictory(false)}
-                className="flex-1 rounded-lg bg-cyan-600 py-2.5 text-sm font-medium text-white active:bg-cyan-700"
+                className="flex-1 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground active:bg-primary-active"
               >
                 <Rocket className="mr-1 h-4 w-4" /> Continue Endless Play
               </button>
@@ -1080,7 +1097,7 @@ const PersistentCommandDrawer = ({
     <Drawer snapPoints={[0.15, 0.35, 0.65]} activeSnapPoint={0.35}>
       <DrawerTrigger asChild>
         <button
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-cyan-600 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-600/30"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/30"
           onClick={() => {
             const next = viewOrder[(viewIndex + 1) % viewOrder.length];
             setActiveView(next);

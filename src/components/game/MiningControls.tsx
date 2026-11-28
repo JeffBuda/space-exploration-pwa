@@ -22,10 +22,10 @@ export function MiningControls({
     <div className="mt-3 space-y-2">
       <button
         className={cn(
-          'w-full rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-cyan-600/30',
+          'w-full rounded-lg py-2.5 text-sm font-medium shadow-lg shadow-primary/30',
           canMine
-            ? 'bg-cyan-600 text-white active:bg-cyan-700'
-            : 'cursor-not-allowed border border-cyan-500/50 bg-cyan-900/30 text-cyan-300 opacity-50'
+            ? 'bg-primary text-primary-foreground active:bg-primary-active'
+            : 'cursor-not-allowed border border-primary/50 bg-secondary/30 text-secondary-foreground opacity-50'
         )}
         disabled={!canMine}
         onClick={onMine}
@@ -33,7 +33,7 @@ export function MiningControls({
         <Package className="mr-1 h-4 w-4" /> Mine Selected Element
       </button>
       <button
-        className="w-full rounded-lg border border-cyan-700/50 bg-cyan-900/30 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900"
+        className="w-full rounded-lg border border-secondary/50 bg-secondary/30 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active"
         onClick={onRecharge}
       >
         <Zap className="mr-1 h-4 w-4" /> Recharge Energy (+100)

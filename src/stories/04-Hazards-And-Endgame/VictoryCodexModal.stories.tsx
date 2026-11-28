@@ -24,13 +24,13 @@ const VictoryCodexModal = ({ onClose }: VictoryCodexModalProps) => {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-green-400">
+            <h2 className="text-xl font-bold text-success">
               <Target className="mr-2 h-5 w-5" /> Codex Complete
             </h2>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="rounded-lg p-1 text-cyan-200/60 transition-colors hover:bg-cyan-900/30"
+            className="rounded-lg p-1 text-secondary-foreground/60 transition-colors hover:bg-secondary/30"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />
@@ -39,22 +39,24 @@ const VictoryCodexModal = ({ onClose }: VictoryCodexModalProps) => {
 
         {/* Victory message */}
         <div className="mb-8 text-center">
-          <p className="text-3xl font-bold text-green-400">All 118 Elements Discovered!</p>
-          <p className="mt-2 text-[10px] text-cyan-300/60">Periodic Discovery Codex Complete</p>
-          <p className="mb-4 text-[10px] text-green-300/60">Endless Play Mode Unlocked</p>
+          <p className="text-3xl font-bold text-success">All 118 Elements Discovered!</p>
+          <p className="mt-2 text-[10px] text-secondary-foreground/60">
+            Periodic Discovery Codex Complete
+          </p>
+          <p className="mb-4 text-[10px] text-success/60">Endless Play Mode Unlocked</p>
         </div>
 
         {/* Codex progress */}
-        <div className="mb-6 rounded-lg border border-green-600/30 bg-green-900/20 p-3">
-          <p className="text-[10px] font-medium text-green-300">Discovery Progress</p>
-          <div className="grid grid-cols-2 gap-2 text-[10px] text-cyan-300">
+        <div className="mb-6 rounded-lg border border-success bg-success-bg/20 p-3">
+          <p className="text-[10px] font-medium text-success">Discovery Progress</p>
+          <div className="grid grid-cols-2 gap-2 text-[10px] text-secondary-foreground">
             <div>
               <p>Discovered</p>
-              <p className="font-mono text-green-300">118 / 118</p>
+              <p className="font-mono text-success">118 / 118</p>
             </div>
             <div>
               <p>Remaining</p>
-              <p className="font-mono text-green-300/60">0 / 118</p>
+              <p className="font-mono text-success/60">0 / 118</p>
             </div>
           </div>
         </div>
@@ -65,8 +67,8 @@ const VictoryCodexModal = ({ onClose }: VictoryCodexModalProps) => {
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'bg-cyan-600 text-white hover:bg-cyan-700',
-              'active:bg-cyan-800'
+              'bg-primary text-primary-foreground hover:bg-primary-hover',
+              'active:bg-primary-active'
             )}
           >
             <Trophy className="mr-1 h-4 w-4" /> Continue Endless Play
@@ -75,7 +77,7 @@ const VictoryCodexModal = ({ onClose }: VictoryCodexModalProps) => {
             onClick={() => setOpen(false)}
             className={cn(
               'flex-1 rounded-lg py-2.5 text-sm font-medium',
-              'border border-cyan-700/50 bg-cyan-900/30 text-cyan-300 hover:bg-cyan-800/30 active:bg-cyan-900'
+              'border border-secondary/50 bg-secondary/30 text-secondary-foreground hover:bg-secondary-hover/30 active:bg-secondary-active'
             )}
           >
             <Menu className="mr-1 h-4 w-4" /> Main Menu

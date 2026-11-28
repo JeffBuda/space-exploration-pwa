@@ -34,7 +34,7 @@ export const parameters = {
   // Dark background matching Space theme
   backgrounds: {
     default: 'space',
-    values: [{ name: 'space', value: '#0d1117' }],
+    values: [{ name: 'space', value: 'hsl(var(--background))' }],
   },
   // iOS safe-area simulator decorator
   decorators: [
