@@ -423,9 +423,7 @@ function handleTriggerFrontierScan(state: StarMapState, frontierNodeId: string):
   const seed = Date.now() % 100000;
   const expansion = expandSectorFrontier(frontierNodeId, state.nodes, state.edges, seed);
 
-  const names = expansion.addedNodeIds
-    .map((id) => expansion.nodes[id]?.name ?? id)
-    .join(', ');
+  const names = expansion.addedNodeIds.map((id) => expansion.nodes[id]?.name ?? id).join(', ');
 
   return {
     ...state,

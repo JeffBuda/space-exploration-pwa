@@ -13,12 +13,7 @@ import type { StarNode, RouteEdge } from './mapTypes';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────
 
-function makeNode(
-  id: string,
-  x: number,
-  y: number,
-  overrides: Partial<StarNode> = {}
-): StarNode {
+function makeNode(id: string, x: number, y: number, overrides: Partial<StarNode> = {}): StarNode {
   return {
     id,
     name: id.toUpperCase(),
@@ -34,12 +29,7 @@ function makeNode(
   };
 }
 
-function makeEdge(
-  id: string,
-  sourceId: string,
-  targetId: string,
-  distanceLY: number
-): RouteEdge {
+function makeEdge(id: string, sourceId: string, targetId: string, distanceLY: number): RouteEdge {
   return { id, sourceId, targetId, distanceLY };
 }
 
@@ -203,9 +193,9 @@ describe('selectNodeInEditMode', () => {
 
   it('is pure on frozen inputs', () => {
     const { nodes, edges } = makeGraph();
-    const frozenNodes = Object.freeze(Object.fromEntries(
-      Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)])
-    ));
+    const frozenNodes = Object.freeze(
+      Object.fromEntries(Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)]))
+    );
     const frozenEdges = Object.freeze(edges.map((e) => Object.freeze(e)));
     const frozenRoute = Object.freeze(['B', 'C']);
     selectNodeInEditMode({
@@ -254,9 +244,9 @@ describe('computeRouteSummary', () => {
 
   it('is pure on frozen inputs', () => {
     const { nodes, edges } = makeGraph();
-    const frozenNodes = Object.freeze(Object.fromEntries(
-      Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)])
-    ));
+    const frozenNodes = Object.freeze(
+      Object.fromEntries(Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)]))
+    );
     const frozenEdges = Object.freeze(edges.map((e) => Object.freeze(e)));
     const frozenRoute = Object.freeze(['B']);
     computeRouteSummary(frozenNodes, frozenEdges, 'A', frozenRoute, 100);
@@ -286,10 +276,7 @@ describe('expandSectorFrontier', () => {
     const result = expandSectorFrontier('A', nodes, edges, 7);
 
     expect(result.addedNodeIds).toHaveLength(GAME_CONSTANTS.FRONTIER_NODES_PER_SCAN);
-    expect(result.addedNodeIds).toEqual([
-      'A-chart-1',
-      'A-chart-2',
-    ]);
+    expect(result.addedNodeIds).toEqual(['A-chart-1', 'A-chart-2']);
     expect(result.edges.length).toBe(edges.length + GAME_CONSTANTS.FRONTIER_NODES_PER_SCAN);
   });
 
@@ -310,7 +297,10 @@ describe('expandSectorFrontier', () => {
     const { nodes, edges } = makeGraph();
     const result = expandSectorFrontier('A', nodes, edges, 123);
 
-    const existing = [...Object.values(nodes), ...result.addedNodeIds.map((id) => result.nodes[id])];
+    const existing = [
+      ...Object.values(nodes),
+      ...result.addedNodeIds.map((id) => result.nodes[id]),
+    ];
     for (const node of result.addedNodeIds.map((id) => result.nodes[id])) {
       for (const other of existing) {
         if (other.id === node.id) continue;
@@ -330,9 +320,9 @@ describe('expandSectorFrontier', () => {
 
   it('does not mutate frozen inputs', () => {
     const { nodes, edges } = makeGraph();
-    const frozenNodes = Object.freeze(Object.fromEntries(
-      Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)])
-    ));
+    const frozenNodes = Object.freeze(
+      Object.fromEntries(Object.entries(nodes).map(([k, v]) => [k, Object.freeze(v)]))
+    );
     const frozenEdges = Object.freeze(edges.map((e) => Object.freeze(e)));
     expandSectorFrontier('A', frozenNodes, frozenEdges, 9);
     expect(Object.keys(frozenNodes).length).toBe(Object.keys(nodes).length);
