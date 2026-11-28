@@ -9,7 +9,6 @@
  */
 import { GAME_CONSTANTS } from './constants';
 import type {
-  CargoSlot,
   EditModeSelectionResult,
   FrontierExpansionResult,
   RouteEdge,
