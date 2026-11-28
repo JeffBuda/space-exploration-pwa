@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    /* ── Shadcn / base semantic colors ── */
     --background: 230 40% 6%;
     --foreground: 190 60% 90%;
     --card: 230 40% 8%;
@@ -24,6 +25,36 @@
     --input: 230 30% 20%;
     --ring: 190 90% 55%;
     --radius: 0.75rem;
+
+    /* ── Game semantic state colors ── */
+    --color-primary-hover: 190 90% 45%;
+    --color-primary-active: 190 90% 35%;
+    --color-secondary-hover: 190 60% 20%;
+    --color-secondary-active: 190 60% 10%;
+
+    /* ── Game status colors (semantic) ── */
+    --color-success: 140 70% 55%;
+    --color-success-bg: 140 60% 15%;
+    --color-success-border: 140 50% 30%;
+
+    --color-warning: 45 100% 65%;
+    --color-warning-bg: 45 60% 15%;
+    --color-warning-border: 45 50% 30%;
+
+    --color-danger: 0 70% 55%;
+    --color-danger-bg: 0 60% 15%;
+    --color-danger-border: 0 50% 30%;
+
+    /* ── Rarity colors (game-specific, semantic) ── */
+    --color-rarity-common: 220 20% 75%;
+    --color-rarity-uncommon: 190 70% 70%;
+    --color-rarity-rare: 45 80% 65%;
+    --color-rarity-epic: 270 70% 65%;
+    --color-rarity-legendary: 45 100% 60%;
+
+    /* ── Fonts ── */
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 
   * {

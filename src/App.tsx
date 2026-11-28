@@ -1,8 +1,30 @@
-export default function App() {
+import { useGame } from '@/hooks/useGame';
+import { selectCodexProgress } from '@/lib/gameState';
+import { TopHudBar } from '@/components/game/TopHudBar';
+import { StarMapBackground } from '@/components/game/StarMapBackground';
+import { CommandDrawer } from '@/components/game/CommandDrawer';
+
+export const App = () => {
+  const { state, mineElement, rechargeEnergy } = useGame();
+  const { credits, energy, cargoHold, discoveredElements } = state;
+  const { complete } = selectCodexProgress(state);
+
+  const handleRecharge = () => rechargeEnergy(100);
+
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-cyan-100 flex flex-col items-center justify-center p-8">
-      <h1 className="text-5xl font-bold text-cyan-400 mb-6 tracking-wide">Hello World</h1>
-      <p className="text-cyan-200 text-lg">Space Exploration PWA - Mission Control</p>
+    <div className="relative h-full w-full overflow-hidden bg-background">
+      <TopHudBar systemName="Sol" credits={credits} energy={energy} />
+      <StarMapBackground />
+      <CommandDrawer
+        energy={energy}
+        cargoHold={cargoHold}
+        discoveredCount={discoveredElements.size}
+        codexComplete={complete}
+        onMine={mineElement}
+        onRecharge={handleRecharge}
+      />
     </div>
-  )
-}
+  );
+};
+
+export default App;

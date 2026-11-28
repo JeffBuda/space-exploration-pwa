@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["src/main.tsx", "src/stories/**/*.stories.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [
+    "@eslint-community/eslint-utils",
+    "@eslint/eslintrc",
+    "@radix-ui/react-slot",
+    "@typescript-eslint/scope-manager",
+    "@typescript-eslint/types",
+    "@typescript-eslint/visitor-keys",
+    "balanced-match",
+    "class-variance-authority",
+    "es-abstract",
+    "ms",
+    "vite"
+  ]
+}
