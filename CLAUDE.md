@@ -96,3 +96,5 @@ src/
    - Changed & Created Files (`git diff --stat`)
    - Engine & Type Diffs (verbatim diffs for `src/engine/` and `src/types/`)
    - UI / Component Summary (files touched, state consumed, actions dispatched, intentional omissions)
+
+4. **Include screenshots of the changed game portion** when possible. If you can launch/build the app and capture screenshots (via preview snapshot tools) and host them somewhere reachable (e.g. a GitHub-hosted image URL), embed them as `![alt](<image-url>)` markdown in the PR description alongside the audit bundle. Prefer screenshots showing the before/after of the feature (e.g. Star Map canvas, RouteTab drawer, transit marker, frontier scan results). If you cannot host screenshots, note "screenshots pending upload" in the PR description rather than omitting them silently.
