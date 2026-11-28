@@ -166,8 +166,8 @@ export function useStarMapViewport({
         const shipNode = nodes[currentLocationId];
         if (shipNode) {
           setTransform({
-            x: entry.contentRect.width / 2 - lyToCanvasPx(shipNode.x),
-            y: entry.contentRect.height * 0.45 - lyToCanvasPx(shipNode.y),
+            x: entry.contentRect.width / 2 - lyToCanvasPx(shipNode.x) * initialZoom,
+            y: entry.contentRect.height * 0.45 - lyToCanvasPx(shipNode.y) * initialZoom,
             scale: initialZoom,
           });
         }

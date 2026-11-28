@@ -76,22 +76,8 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Run axe-core accessibility tests
-        env:
-          STORYBOOK_PORT: 6006
-        run: |
-          # Start Storybook in background
-          npx storybook dev --no-open --port ${{ env.STORYBOOK_PORT }} &
-          STORYBOOK_PID=$!
-          # Wait for Storybook to be ready
-          for i in $(seq 1 30); do
-            if curl -s http://localhost:6006/ > /dev/null 2>&1; then
-              break
-            fi
-            sleep 2
-          done
-          # Run accessibility tests
-          npx playwright test .github/tests/accessibility.spec.ts
-          kill $STORYBOOK_PID 2>/dev/null || true
+        # Playwright's webServer config (playwright.config.ts) starts Storybook automatically.
+        run: npx playwright test tests/e2e/accessibility.spec.ts
