@@ -80,3 +80,19 @@ src/
 - No `any` — use proper types, generics, or `unknown`.
 - Prefer `interface` for object shapes; `type` for unions/primitives.
 - Use `readonly` for immutable data structures.
+
+## PR Workflow Instructions
+
+**Every agent MUST follow these rules when creating/managing PRs:**
+
+1. **Always create PRs as Draft** — never open a PR as "ready for review" by default. Use `gh pr create --draft` or the equivalent API call.
+
+2. **Never merge PRs without explicit user approval** — after all checks pass, wait for the user to say "merge" or "proceed" before merging. Do not auto-merge.
+
+3. **Include the full Post-Implementation Audit Bundle** at the bottom of every PR description. After completing implementation work, invoke the `pr-audit-handoff` skill and append its entire output (the Principal Dev Handoff Bundle in the exact format specified by that skill) to the PR description. This allows the Principal Dev (Hydrogen) to cross-check against the Living Design & Architecture Bible via the GitHub app.
+
+   The audit bundle must include:
+   - Verification Gate Results (`tsc`, `vitest`, `build`, Anti-Slop Audit)
+   - Changed & Created Files (`git diff --stat`)
+   - Engine & Type Diffs (verbatim diffs for `src/engine/` and `src/types/`)
+   - UI / Component Summary (files touched, state consumed, actions dispatched, intentional omissions)
