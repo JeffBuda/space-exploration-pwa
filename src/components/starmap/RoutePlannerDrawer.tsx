@@ -5,8 +5,6 @@ import { TransitControls } from './TransitControls';
 import { RouteActions } from './RouteActions';
 
 interface RoutePlannerDrawerProps {
-  snapPoint: number;
-  onSnapPointChange: (snapPoint: number | string | null) => void;
   map: StarMapController;
 }
 

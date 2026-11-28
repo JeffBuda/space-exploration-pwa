@@ -2,11 +2,17 @@ import {
   STAR_CLUSTER,
   STARTER_CARGO,
   START_SYSTEM_ID,
+  ROUTE_EDGES,
   buildRouteHops,
   findEdgeBetween,
   isPirateHazardSystem,
+  type StarNode as StarmapStarNode,
+  type RouteEdge as StarmapRouteEdge,
 } from './starmap';
 import { INITIAL_ENERGY, INITIAL_CREDITS } from './game';
+import { GAME_CONSTANTS } from '@/engine/constants';
+import { expandSectorFrontier } from '@/engine/routeEngine';
+import type { StarNode, RouteEdge } from '@/engine/mapTypes';
 
 /** Cargo slot for pirate-ambush loot. */
 export interface CargoSlot {
@@ -36,6 +42,50 @@ export interface StarMapState {
   arrivedAt: string | null;
   lastMessage: string | null;
   ambush: AmbushState;
+  /** Star nodes keyed by id, in engine light-year coordinates. */
+  nodes: Record<string, StarNode>;
+  /** Hyperlane edges between nodes (engine route-edge shape). */
+  edges: readonly RouteEdge[];
+}
+
+/** Convert a starmap data node into an engine-map node (light-year coords). */
+export function toEngineStarNode(n: StarmapStarNode): StarNode {
+  return {
+    id: n.id,
+    name: n.name,
+    x: n.x,
+    y: n.y,
+    isDiscovered: n.status !== 'unknown',
+    hasSpaceport: n.hasSpaceport,
+    isFrontier: n.status === 'discovered',
+    safety: 'Safe',
+    bodyCount: n.bodyCount,
+    resourceHints: n.resourceHints,
+  };
+}
+
+/** Convert a starmap data edge into an engine route edge (distance only). */
+export function toEngineRouteEdge(e: StarmapRouteEdge): RouteEdge {
+  return {
+    id: e.id,
+    sourceId: e.sourceId,
+    targetId: e.targetId,
+    distanceLY: e.distanceLY,
+  };
+}
+
+/** Build the engine-shaped node map from the seeded cluster. */
+export function buildEngineNodes(): Record<string, StarNode> {
+  const nodes: Record<string, StarNode> = {};
+  for (const n of STAR_CLUSTER) {
+    nodes[n.id] = toEngineStarNode(n);
+  }
+  return nodes;
+}
+
+/** Build the engine-shaped edge list from the seeded routes. */
+export function buildEngineEdges(): RouteEdge[] {
+  return ROUTE_EDGES.map(toEngineRouteEdge);
 }
 
 export type MapPhase = 'idle' | 'in-transit' | 'arrived';
@@ -48,6 +98,7 @@ export type StarMapAction =
   | { type: 'TIME_SKIP'; seconds: number }
   | { type: 'CANCEL_HOP' }
   | { type: 'TRIGGER_AMBUSH' }
+  | { type: 'TRIGGER_FRONTIER_SCAN'; frontierNodeId: string }
   | {
       type: 'RESOLVE_AMBUSH';
       evaded: boolean;
@@ -57,7 +108,7 @@ export type StarMapAction =
 
 /** Initial map state, with optional story overrides. */
 export function createInitialState(overrides: Partial<StarMapState> = {}): StarMapState {
-  return {
+  const initial: StarMapState = {
     route: [START_SYSTEM_ID],
     energy: INITIAL_ENERGY,
     credits: INITIAL_CREDITS,
@@ -74,7 +125,15 @@ export function createInitialState(overrides: Partial<StarMapState> = {}): StarM
       stolen: null,
       cargo: STARTER_CARGO,
     },
+    nodes: buildEngineNodes(),
+    edges: buildEngineEdges(),
     ...overrides,
+  };
+  // Deep-copy node map and edge list so callers cannot mutate shared state.
+  return {
+    ...initial,
+    nodes: { ...initial.nodes },
+    edges: [...initial.edges],
   };
 }
 
@@ -344,6 +403,37 @@ function handleTriggerAmbush(state: StarMapState): StarMapState {
   };
 }
 
+/** Handler: chart a frontier system — validate, deduct energy, expand sector. */
+function handleTriggerFrontierScan(state: StarMapState, frontierNodeId: string): StarMapState {
+  const node = state.nodes[frontierNodeId];
+  if (!node) {
+    return { ...state, lastMessage: 'Unknown system — cannot scan.' };
+  }
+  if (!node.isFrontier) {
+    return { ...state, lastMessage: `${node.name} is not a frontier system.` };
+  }
+  if (state.energy < GAME_CONSTANTS.FRONTIER_SCAN_ENERGY_COST) {
+    return {
+      ...state,
+      lastMessage: `Insufficient energy: need ${GAME_CONSTANTS.FRONTIER_SCAN_ENERGY_COST} EN to chart.`,
+    };
+  }
+
+  const newEnergy = state.energy - GAME_CONSTANTS.FRONTIER_SCAN_ENERGY_COST;
+  const seed = Date.now() % 100000;
+  const expansion = expandSectorFrontier(frontierNodeId, state.nodes, state.edges, seed);
+
+  const names = expansion.addedNodeIds.map((id) => expansion.nodes[id]?.name ?? id).join(', ');
+
+  return {
+    ...state,
+    energy: newEnergy,
+    nodes: expansion.nodes,
+    edges: expansion.edges,
+    lastMessage: `Sector charted: ${names}.`,
+  };
+}
+
 /** Handler: resolve pirate ambush outcome and apply loot/cargo change. */
 function handleResolveAmbush(
   state: StarMapState,
@@ -403,6 +493,8 @@ export function starMapReducer(state: StarMapState, action: StarMapAction): Star
       return handleCancelHop(state);
     case 'TRIGGER_AMBUSH':
       return handleTriggerAmbush(state);
+    case 'TRIGGER_FRONTIER_SCAN':
+      return handleTriggerFrontierScan(state, action.frontierNodeId);
     case 'RESOLVE_AMBUSH':
       return handleResolveAmbush(state, action.evaded, action.stolen);
     case 'DISMISS_AMBUSH':

@@ -79,6 +79,8 @@ export function useStarMap(
     arrivedAt,
     lastMessage,
     ambush,
+    nodes,
+    edges,
   } = state;
 
   const cadence = useCadenceClicker();
@@ -123,15 +125,43 @@ export function useStarMap(
   );
   const dismissAmbush = useCallback(() => dispatch({ type: 'DISMISS_AMBUSH' }), [dispatch]);
 
-  // Transit timer effect (1-second interval)
+  /** Chart the frontier system at `frontierNodeId`: validate, deduct energy, expand sector. */
+  const triggerFrontierScan = useCallback(
+    (frontierNodeId: string) => dispatch({ type: 'TRIGGER_FRONTIER_SCAN', frontierNodeId }),
+    [dispatch]
+  );
+
+  // Transit timer effect: delta-corrected requestAnimationFrame loop.
+  // Accumulates elapsed milliseconds and dispatches TICK once per second so
+  // background-tab throttling (e.g. iOS Safari) does not drift transit progress.
   useEffect(() => {
     if (state.phase !== 'in-transit') return;
 
-    const intervalId = window.setInterval(() => {
-      dispatch({ type: 'TICK' });
-    }, 1000);
+    let lastTimestamp: number | null = null;
+    let accumulator = 0;
+    const intervalMs = 1000;
 
-    return () => window.clearInterval(intervalId);
+    let animationFrameId = 0;
+
+    const step = (timestamp: number): void => {
+      if (lastTimestamp === null) {
+        lastTimestamp = timestamp;
+      } else {
+        accumulator += timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
+
+        while (accumulator >= intervalMs) {
+          accumulator -= intervalMs;
+          dispatch({ type: 'TICK' });
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+
+    return () => cancelAnimationFrame(animationFrameId);
   }, [state.phase, dispatch]);
 
   return {
@@ -146,6 +176,8 @@ export function useStarMap(
     arrivedAt,
     lastMessage,
     ambush,
+    nodes,
+    edges,
 
     // Actions
     engage,
@@ -154,6 +186,7 @@ export function useStarMap(
     plotStar,
     triggerTimeSkip,
     triggerAmbush,
+    triggerFrontierScan,
     resolveAmbush,
     dismissAmbush,
 

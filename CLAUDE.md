@@ -80,3 +80,22 @@ src/
 - No `any` — use proper types, generics, or `unknown`.
 - Prefer `interface` for object shapes; `type` for unions/primitives.
 - Use `readonly` for immutable data structures.
+
+## PR Workflow Instructions
+
+**Every agent MUST follow these rules when creating/managing PRs:**
+
+1. **Always create PRs as Draft** — never open a PR as "ready for review" by default. Use `gh pr create --draft` or the equivalent API call.
+
+2. **Never merge PRs without explicit user approval** — after all checks pass, wait for the user to say "merge" or "proceed" before merging. Do not auto-merge.
+
+3. **Structure every PR description as: natural-language summary → audit bundle (last).** After completing implementation work:
+   - Open with a natural-language summary of what changed in the PR.
+   - Then invoke the `pr-audit-handoff` skill and append its entire output (the Principal Dev Handoff Bundle in the exact format specified by that skill). The audit bundle **must be the last substantive section** in the PR description so the Principal Dev (Hydrogen) can cross-check against the Living Design & Architecture Bible via the GitHub app without hunting past unrelated text.
+   - The audit bundle must include:
+     - Verification Gate Results (`tsc`, `vitest`, `build`, Anti-Slop Audit)
+     - Changed & Created Files (`git diff --stat`)
+     - Engine & Type Diffs (verbatim diffs for `src/engine/` and `src/types/`)
+     - UI / Component Summary (files touched, state consumed, actions dispatched, intentional omissions)
+
+> **Note:** Screenshots are intentionally omitted from this workflow — T3 Code's GitHub tools lack an image-upload path, so screenshots cannot be embedded programmatically. If you want screenshots, paste them manually into the GitHub.com PR editor after the PR is created.

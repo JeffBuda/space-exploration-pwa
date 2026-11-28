@@ -5,6 +5,15 @@ import { STARTER_CARGO } from '@/lib/starmap';
 import { formatDuration } from '@/lib/game';
 import { PirateAmbushContent } from './PirateAmbushContent';
 
+/**
+ * Cryptographically-backed random integer in [min, max] (project bans Math.random).
+ */
+function rollInt(min: number, max: number): number {
+  if (max <= min) return min;
+  const raw = crypto.getRandomValues(new Uint32Array(1))[0];
+  return min + Math.floor((raw / 0xffffffff) * (max - min + 1));
+}
+
 export interface PirateAmbushModalProps {
   active: boolean;
   map: StarMapController;
@@ -20,13 +29,13 @@ export function PirateAmbushModal({ active, map }: PirateAmbushModalProps) {
 
   const handleAttemptEvade = useCallback(() => {
     cadence.tap(Date.now());
-    const success = Math.random() * 100 < gauge;
+    const success = rollInt(0, 99) < gauge;
     if (success) {
       setOutcome('evaded');
       map.resolveAmbush(true);
     } else {
-      const pick = STARTER_CARGO[Math.floor(Math.random() * STARTER_CARGO.length)];
-      const quantity = Math.max(1, Math.floor(Math.random() * pick.quantity));
+      const pick = STARTER_CARGO[rollInt(0, STARTER_CARGO.length - 1)];
+      const quantity = Math.max(1, rollInt(0, pick.quantity - 1));
       const stolenCargo = { symbol: pick.symbol, name: pick.name, quantity };
       setStolen(stolenCargo);
       setOutcome('failed');

@@ -46,7 +46,7 @@ export function StarMapCanvas({
       />
 
       {/* Route Planner Drawer */}
-      <RoutePlannerDrawer snapPoint={0.15} onSnapPointChange={() => {}} map={map} />
+      <RoutePlannerDrawer map={map} />
 
       {/* Pirate Ambush Modal */}
       <PirateAmbushModal active={map.isAmbushActive} map={map} />
