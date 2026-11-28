@@ -89,12 +89,13 @@ src/
 
 2. **Never merge PRs without explicit user approval** — after all checks pass, wait for the user to say "merge" or "proceed" before merging. Do not auto-merge.
 
-3. **Include the full Post-Implementation Audit Bundle** at the bottom of every PR description. After completing implementation work, invoke the `pr-audit-handoff` skill and append its entire output (the Principal Dev Handoff Bundle in the exact format specified by that skill) to the PR description. This allows the Principal Dev (Hydrogen) to cross-check against the Living Design & Architecture Bible via the GitHub app.
+3. **Structure every PR description as: natural-language summary → audit bundle → screenshots (last).** After completing implementation work:
+   - Open with a natural-language summary of what changed in the PR.
+   - Then invoke the `pr-audit-handoff` skill and append its entire output (the Principal Dev Handoff Bundle in the exact format specified by that skill). The audit bundle **must be the last substantive section** in the PR description so the Principal Dev (Hydrogen) can cross-check against the Living Design & Architecture Bible via the GitHub app without hunting past unrelated text.
+   - The audit bundle must include:
+     - Verification Gate Results (`tsc`, `vitest`, `build`, Anti-Slop Audit)
+     - Changed & Created Files (`git diff --stat`)
+     - Engine & Type Diffs (verbatim diffs for `src/engine/` and `src/types/`)
+     - UI / Component Summary (files touched, state consumed, actions dispatched, intentional omissions)
 
-   The audit bundle must include:
-   - Verification Gate Results (`tsc`, `vitest`, `build`, Anti-Slop Audit)
-   - Changed & Created Files (`git diff --stat`)
-   - Engine & Type Diffs (verbatim diffs for `src/engine/` and `src/types/`)
-   - UI / Component Summary (files touched, state consumed, actions dispatched, intentional omissions)
-
-4. **Include screenshots of the changed game portion** when possible. If you can launch/build the app and capture screenshots (via preview snapshot tools) and host them somewhere reachable (e.g. a GitHub-hosted image URL), embed them as `![alt](<image-url>)` markdown in the PR description alongside the audit bundle. Prefer screenshots showing the before/after of the feature (e.g. Star Map canvas, RouteTab drawer, transit marker, frontier scan results). If you cannot host screenshots, note "screenshots pending upload" in the PR description rather than omitting them silently.
+4. **Include screenshots of the changed game portion** when possible, placed **after** the audit bundle. If you can launch/build the app and capture screenshots (via preview snapshot tools) and host them somewhere reachable (e.g. a GitHub-hosted image URL), embed them as `![alt](<image-url>)` markdown below the audit bundle. Prefer screenshots showing the before/after of the feature (e.g. Star Map canvas, RouteTab drawer, transit marker, frontier scan results). If you cannot host screenshots, note "screenshots pending" below the audit bundle rather than omitting them silently.
