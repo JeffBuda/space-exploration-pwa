@@ -3,6 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { AlertTriangle, Trophy, Menu, X, Zap } from 'lucide-react';
 
+// Use crypto.getRandomValues instead of Math.random (project-wide ban);
+const randomFloat = (max: number): number =>
+  (crypto.getRandomValues(new Uint32Array(1))[0] / 0x100000000) * max;
+
 function formatHMS(seconds: number): string {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -67,20 +71,20 @@ const PirateEncounterModal = ({
 
   const handleAttemptEvade = () => {
     const skip = handleTap(Date.now());
-    const success = Math.random() * 100 < gauge;
+    const success = randomFloat(100) < gauge;
     if (success) {
       setPhase('evaded');
       setStolen(null);
     } else {
       // Failed: random Periodic Table cargo stolen from the hold
       const targets = cargoHold.length > 0 ? cargoHold : [{ symbol: 'Au', quantity: 15 }];
-      const pick = targets[Math.floor(Math.random() * targets.length)];
+      const pick = targets[Math.floor(randomFloat(targets.length))];
       const element = pick.symbol ?? 'Unknown';
       const name = pick.name ?? element;
       setStolen({
         symbol: element,
         name,
-        quantity: Math.max(1, Math.floor(Math.random() * pick.quantity)),
+        quantity: Math.max(1, Math.floor(randomFloat(pick.quantity))),
       });
       setPhase('failed');
     }
